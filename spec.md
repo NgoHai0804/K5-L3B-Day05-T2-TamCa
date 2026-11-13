@@ -59,7 +59,7 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 * Cách xử lý: trả lời kèm giới hạn, không chuyển TA ngay (TA trả lời sau hạn nộp).
 * Loại lỗi: thẩm quyền. Chặn từ tool (`gui_dap_so_bai_mo` ở mức cấm), vì chỉ một câu "đúng rồi" là đã lộ đáp số.
 
-Kịch bản suýt được chọn là #5: học viên xin bỏ số 45, AI tự đăng câu trả lời lên FAQ. Ca này cũng nguy hiểm vì cả lớp đọc phải câu sai. Em không chọn vì chỉ cần đặt dang_FAQ ở mức "cần TA duyệt" là chặn được. Còn #1 và #2 thì sai ngay trong câu trả lời, không có bước nào để chặn trước.
+Kịch bản suýt được chọn là #5: học viên xin bỏ số 45, AI tự đăng câu trả lời lên FAQ. Ca này cũng nguy hiểm vì cả lớp đọc phải câu sai. Nhóm không chọn vì chỉ cần đặt dang_FAQ ở mức "cần TA duyệt" là chặn được. Còn #1 và #2 thì sai ngay trong câu trả lời, không có bước nào để chặn trước.
 
 ## §3. Khi AI sai  (chặng 3)
 
@@ -191,7 +191,7 @@ Các số ①–⑨ dưới đây là các chỗ trên màn hình, dùng lại n
 
 | Nguyên tắc | Chỗ cụ thể | Kịch bản |
 |---|---|---|
-| **G2: Làm rõ AI làm tốt tới đâu** (kèm G1 và Điều 11 Luật AI 134/2025) | ① badge "Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3"; ③ nhãn "⚠ Tài liệu có câu cần xem lại"; ⑦ nhãn "Chỉ gợi ý: bài đang mở" | #1, #2 |
+| **G2: Làm rõ AI làm tốt tới đâu** (kèm G1 và Luật AI) | ① badge "Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3"; ③ nhãn "⚠ Tài liệu có câu cần xem lại"; ⑦ nhãn "Chỉ gợi ý: bài đang mở" | #1, #2 |
 | **G11 + PAIR Explainability: Giải thích vì sao, cho tự kiểm căn cứ** | ② chip §3.3 / §3.1 / §3.2 mở đoạn gốc; phản ví dụ "0,25 → 0,5" kèm bài tự kiểm (4 và 0,04); câu "Vì bài đang mở nên…" | #1, #2 |
 | **G10: Thu hẹp phạm vi khi nghi ngờ** | ⑥ banner bài đang mở và ⑧ chỉ có gợi ý bậc đầu, **không có nút đáp án**; ở #1 AI tách phần đúng của §3.3 ra khỏi câu nghi sai thay vì bác bỏ cả mục | #2, #1 |
 | *Phụ:* **PAIR Errors + Graceful Failure** | ④ thẻ chuyển TA có giờ phản hồi thật và nút [Rút lại] | #1 |

@@ -1,6 +1,6 @@
 # Bài nộp LAB5 — Track 2 · Nhóm TamCa
 
-**Lớp:** ____ · **Bàn / zone:** ____ · **Track:** ____
+**Lớp:** L3B · **Bàn / zone:** ____ · **Track:** T2
 
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 | ------------ | -------------- | --------------- |
@@ -32,7 +32,7 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 
 | #  | Tin người dùng                                                          | Lớp  | AI có thể sai thế nào (trỏ tool / dữ liệu)                                                                                                                                                                                                                 | Sản phẩm tốt nên làm gì                                                                                                                                              | Nhãn                      |
 | -- | -------------------------------------------------------------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| 1  | 22:15 "Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?"   | ① ④ | `tra_cuu_tai_lieu` trả đúng câu sai ở **§3.3** ("vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai") → AI khẳng định "tài liệu nói vậy". Câu này sai khi phương sai < 1: phương sai 0,25 → độ lệch chuẩn 0,5 | Nêu câu §3.3 cần xem lại + phản ví dụ; không khẳng định tài x`liệu đúng khi chưa kiểm; gợi ý học viên báo giảng viên                              | không chấp nhận được |
+| 1  | 22:15 "Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?"   | ① ④ | `tra_cuu_tai_lieu` trả đúng câu sai ở **§3.3** ("vì là căn bậc hai, độ lệch chuẩn luôn nhỏ hơn phương sai") → AI khẳng định "tài liệu nói vậy". Câu này sai khi phương sai < 1: phương sai 0,25 → độ lệch chuẩn 0,5 | Nêu câu §3.3 cần xem lại + phản ví dụ; không khẳng định tài liệu đúng khi chưa kiểm; gợi ý học viên báo giảng viên                              | không chấp nhận được |
 | 2  | 23:10 "Giải giúp em bài 3 với, mai nộp rồi"                          | ③    | `goi_y_bai_tap` gợi ý quá tay → đưa luôn trung bình 15,25 và trung vị 11,5 của **Bài 3 đang mở** (§3.5)                                                                                                                                    | Không đưa đáp số; chỉ gợi ý bước đầu (công thức §3.1; sắp xếp, số giá trị chẵn ở §3.2); mời học viên tự tính                                  | không chấp nhận được |
 | 3  | 23:30 "Em ra trung bình 15,25, trung vị 11,5 đúng không ạ?"          | ③    | Trả lời "đúng rồi" = xác nhận đáp số bài đang mở; hoặc tự tính sai rồi bảo học viên sai                                                                                                                                                       | Không xác nhận đúng/sai; đưa cách tự kiểm (đếm đủ 8 giá trị, lấy trung bình 2 giá trị giữa) trích §3.1, §3.2                                       | không chấp nhận được |
 | 4  | 22:40 "Hạn bài 3 khi nào ạ? Em xin gia hạn, báo TA giúp em"         | ① ③ | Model tự đoán hạn thay vì đọc trang khoá học; hoặc nói "đã báo TA, TA đồng ý" khi chưa gọi `chuyen_TA`, lúc đã quá giờ TA (08:00–22:00)                                                                                                | Hạn chỉ lấy từ trang khoá học (13/11/2026 23:59). Gia hạn không phải việc AI quyết: gọi `chuyen_TA`, nói rõ TA trả lời từ 08:00, tức là sau hạn nộp | không chấp nhận được |
@@ -43,27 +43,27 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 | 9  | 23:45 "p-value là gì ạ, em thấy trên mạng"                           | ③    | Trang khoá học: p-value là **buổi 7**, chưa mở, tài liệu chưa có → AI giảng sâu ngoài tài liệu, dễ bịa                                                                                                                                    | Nói buổi 7 sẽ học, giới thiệu tối đa một câu, quay về bài buổi 3                                                                                              | sửa được               |
 | 10 | 22:30 "Cái độ lệch ấy là gì ạ, em đọc không hiểu"              | ②    | "Độ lệch" mơ hồ: độ lệch chuẩn (**§3.3**) hay dữ liệu lệch (**§3.2**)? AI đoán một nghĩa rồi giảng sai thứ học viên cần                                                                                                       | Hỏi lại một câu kèm 2 lựa chọn trỏ §3.2 / §3.3, rồi giảng kèm trích mục                                                                                     | sửa được               |
 
-**2 kịch bản đắt giá nhất:**
+**2 kịch bản đắt giá nhất (chi tiết và quyết định ở §3):**
 
 #1. Tài liệu §3.3 sai
 
-* AI nói: "Câu 'luôn nhỏ hơn phương sai' ở §3.3 cần xem lại: phương sai 0,25 thì độ lệch chuẩn là 0,5. Em báo giảng viên nhé."
-* Người dùng thấy: nhãn "Cần kiểm chứng", đoạn trích §3.3, nút "Báo giảng viên".
-* Cách xử lý: trả lời kèm giới hạn, không hỏi lại, không chuyển TA (TA đã nghỉ).
-* Loại lỗi: ngữ cảnh. Phải thêm luật "nghi tài liệu sai thì nêu ra, không khẳng định".
+* AI nói: "Câu 'luôn nhỏ hơn phương sai' ở §3.3 chưa đúng trong mọi trường hợp: khi phương sai nhỏ hơn 1 thì ngược lại, ví dụ 0,25 → 0,5. Em thử tự kiểm với 4 và 0,04 nhé. Mình đã gửi câu này cho TA để giảng viên xem lại tài liệu."
+* Người dùng thấy: nhãn "⚠ Tài liệu có câu cần xem lại", đoạn trích §3.3 (câu nghi sai tô vàng), **thẻ chuyển TA do `chuyen_TA` tạo** (có [Rút lại]), nút "Câu trả lời này sai chỗ nào?".
+* Cách xử lý: trả lời kèm giới hạn — giảng ngay phần đúng của §3.3, **gửi TA nhưng không bắt học viên chờ**. Không hỏi lại.
+* Loại lỗi: ngữ cảnh. Luật "nghi tài liệu sai thì nêu ra, không khẳng định" + cờ "nghi sai" gắn vào đoạn tài liệu (sửa câu chữ không đủ).
 
-#2. Xin giải bài 3
+#2. Xin giải bài 3 (gộp cả #3 xin xác nhận đáp số)
 
-* AI nói: "Bài 3 đang mở nên mình không đưa đáp số. Gợi ý: xem §3.1 và §3.2, em tính thử nhé."
-* Người dùng thấy: nhãn "Chỉ gợi ý", nút "Hỏi TA (từ 08:00)", không có nút xem đáp án.
+* AI nói: "Bài 3 hạn 23:59 hôm nay nên mình không đưa đáp số. Gợi ý: xem §3.1 và §3.2, em tính thử nhé."
+* Người dùng thấy: banner "Bài tập 3 · đang mở", nhãn "Chỉ gợi ý", nút "Hỏi TA (từ 08:00, sau hạn nộp)", **không có nút xem đáp số**.
 * Cách xử lý: trả lời kèm giới hạn, không chuyển TA ngay (TA trả lời sau hạn nộp).
-* Loại lỗi: thẩm quyền. Phải chặn từ tool, vì chỉ một câu "đúng rồi" là đã lộ đáp số.
+* Loại lỗi: thẩm quyền. Chặn từ tool (`gui_dap_so_bai_mo` ở mức cấm), vì chỉ một câu "đúng rồi" là đã lộ đáp số.
 
 Kịch bản suýt được chọn là #5: học viên xin bỏ số 45, AI tự đăng câu trả lời lên FAQ. Ca này cũng nguy hiểm vì cả lớp đọc phải câu sai. Em không chọn vì chỉ cần đặt dang_FAQ ở mức "cần TA duyệt" là chặn được. Còn #1 và #2 thì sai ngay trong câu trả lời, không có bước nào để chặn trước.
 
 ## §3. Khi AI sai  (chặng 3)
 
-Các số ①–⑨ dưới đây là các chỗ trên màn hình, dùng lại nguyên số ở §5 (ảnh đánh số của prototype).
+Các số ①–⑨ dưới đây là các chỗ trên màn hình, dùng lại nguyên số ở §5 (ảnh đánh số của prototype). **Chỗ 9** là **màn TA** (hàng chờ câu được chuyển + bảng "Trợ lý được làm gì").
 
 ### 3.0 Bốn đường đi của trải nghiệm
 
@@ -291,9 +291,30 @@ Mỗi mức đều có giá:
 
 ## §5. Prototype  (chặng 5)
 
-- Link hoặc file · công cụ · phần nào mock · có lời gọi AI thật không.
-- 1–2 ảnh có đánh số; mỗi số: thể hiện gì · nguyên tắc HAX/PAIR nào · mức tự chủ nào.
-- Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ — đã nghĩ tới cách nào khác, vì sao chọn cách này.
+**File:** `prototype/index.html` (mở bằng trình duyệt; 1 file, vanilla JS). **Công cụ:** HTML/CSS/JS tự viết. **Mock:** toàn bộ dữ liệu (tài liệu buổi 3, trang khoá học, hàng chờ TA) là dữ liệu dựng; nút "Gửi" không gọi model. **Lời gọi AI thật:** không (bài thiết kế).
+
+**Hai màn hình:** *Học viên* (khung chat) và *TA* (hàng chờ + duyệt FAQ + bảng mức tự chủ). Cột "Câu hỏi" bên trái phủ đủ **10 kịch bản §2**; **bốn đường UX ở §3.0** đều bấm được (happy path #7 · low-confidence #10 · failure #1 · correction #1 đưa phản ví dụ).
+
+**Chỗ 1–9 trên màn hình** (bật nút "Chú thích 1–9" trong prototype để thấy số):
+
+| # | Chỗ | Thể hiện gì | HAX/PAIR | Mức tự chủ |
+|---|---|---|---|---|
+| 1 | Badge "Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3" | Ranh giới nguồn | G2 | — |
+| 2 | Chip §3.1/§3.2/§3.3 (bấm mở đoạn gốc; §3.3 có cờ "nghi sai" + câu tô vàng) | Bằng chứng để tự kiểm | G11 + Explainability; cờ "nghi sai" (§3.4) | `tra_cuu_tai_lieu` · tự làm |
+| 3 | Nhãn "⚠ Tài liệu có câu cần xem lại" | Nêu nghi ngờ, không khẳng định | G2, G10 | tự làm |
+| 4 | Thẻ chuyển TA + [Rút lại] | Báo người, giờ thật, hoàn tác | PAIR Errors + Graceful Failure | `chuyen_TA` · tự làm (hoàn tác) |
+| 5 | Nút "Câu trả lời này sai chỗ nào?" | Mời feedback | G15 | tự làm |
+| 6 | Banner bài đang mở (hạn + thời gian còn lại) | Hạn lấy từ trang khoá học | G10 | — |
+| 7 | Nhãn "Chỉ gợi ý: bài đang mở" | Thu hẹp phạm vi | G10 | `goi_y_buoc_dau` · tự làm |
+| 8 | Cụm nút [Gợi ý tiếp (2 bậc)] · [Xem lời giải mẫu Bài 2] · [Hỏi TA] | Không có nút đáp số | G10 | cấm `gui_dap_so_bai_mo`; `chuyen_TA` tự làm |
+| 9 | Màn TA (hàng chờ + duyệt FAQ + bảng mức) | Người duyệt thấy gì trước khi bấm | "cần người duyệt" | `dang_FAQ` cần duyệt; `soan_nhap_FAQ` tự làm |
+
+**Ảnh:** chụp 2 ảnh màn hình (Học viên bật chú thích 1–9; màn TA), lưu vào `prototype/`.
+
+**Quyết định: cách hiện độ chắc/bằng chứng và điều khiển mức tự chủ.**
+- Đã nghĩ tới: (a) hiện **thanh % độ chắc** cho mọi câu; (b) chỉ hiện bằng chứng khi người dùng bấm "vì sao".
+- **Chọn:** hiện **cờ trạng thái + trích § mở được** thay cho % — độ chắc dạng số không có nghĩa với học viên, còn trích dẫn để **tự kiểm** thì hữu ích (Explainability + Trust hơn là tin tối đa).
+- Mức tự chủ thể hiện bằng **hành vi**: tự làm → có [Hoàn tác]/[Rút lại]; cần duyệt → có bước xác nhận ở màn TA; cấm → **không tồn tại nút** đáp số. Đã loại cách hiện mọi mức bằng nhãn màu (đọc lướt qua, không chặn được hành vi).
 
 ## §6. Tốt là gì  (chặng 6 — nhẹ, bỏ được nếu thiếu giờ)
 

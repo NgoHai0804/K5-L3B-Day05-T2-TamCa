@@ -61,13 +61,154 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 
 ## §3. Khi AI sai  (chặng 3)
 
-Với mỗi kịch bản đắt nhất:
+Các số ①–⑨ dưới đây là các chỗ trên màn hình, dùng lại nguyên số ở §5 (ảnh đánh số của prototype).
 
-- AI nói gì (nguyên văn) · người dùng thấy gì · làm gì tiếp · ai được báo, sau bao lâu.
-- Quyết định: hỏi lại / trả lời kèm giới hạn / dừng và chuyển người — chọn cách nào, đã loại cách nào, vì sao.
-- Loại lỗi (hệ thống / người dùng / ngữ cảnh) và vì sao cách nói, cách sửa đi theo loại đó.
-- 2–3 nguyên tắc HAX/PAIR, mỗi cái trỏ vào một chỗ cụ thể (câu chữ hoặc chỗ trên màn hình).
-- Lỗi nào sửa câu chữ không cứu được (nếu có), và thiết kế cứu nó thế nào.
+### 3.0 Bốn đường đi của trải nghiệm
+
+| Đường đi | Kịch bản ở §2 | AI làm gì |
+|---|---|---|
+| Happy path | #7 (Bài 2 đã hết hạn) | Giải đầy đủ, trích §3.1 |
+| Low-confidence | #10 ("độ lệch" mơ hồ) | Hỏi lại một câu, kèm 2 lựa chọn §3.2 / §3.3 |
+| Failure / không căn cứ | **#1** (tài liệu sai) · #6 (slide 12) · #9 (buổi 7) | Nói rõ chỗ không có hoặc chỗ cần xem lại, không bịa |
+| Correction | **#1** (học viên đưa phản ví dụ, tức là sửa tài liệu và sửa AI) | Ghi nhận ví dụ, gắn cờ đoạn tài liệu, báo người có thẩm quyền |
+| Vượt thẩm quyền | **#2** (xin giải bài đang mở) | Trả lời kèm giới hạn: chỉ gợi ý bước đầu |
+
+---
+
+### 3.1 Kịch bản #1: Tài liệu §3.3 sai
+
+**Bối cảnh:** 22:15 ngày 13/11, đã quá giờ TA (08:00–22:00). Học viên hỏi: "Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?"
+
+**AI nói (nguyên văn):**
+
+> Theo **§3.3**, độ lệch chuẩn là căn bậc hai của phương sai và có cùng đơn vị với dữ liệu. Phần này em dùng bình thường.
+>
+> Riêng câu *"độ lệch chuẩn luôn nhỏ hơn phương sai"* trong §3.3 thì **chưa đúng trong mọi trường hợp**. Khi phương sai nhỏ hơn 1, căn bậc hai của nó lại lớn hơn chính nó. Ví dụ phương sai 0,25 thì độ lệch chuẩn là √0,25 = 0,5.
+> Em thử tự kiểm với phương sai 4 và phương sai 0,04 xem lần nào độ lệch chuẩn nhỏ hơn, lần nào lớn hơn nhé.
+>
+> Mình không sửa được tài liệu, nên đã gửi câu này cho TA để giảng viên xem lại (thẻ bên dưới). Bài tập 3 không dùng tới câu này, em cứ làm bài bình thường.
+
+**Người dùng thấy (ngoài câu chữ):**
+- ① Badge đầu khung chat: **"Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3"**.
+- ② Chip **§3.3**. Bấm vào mở đoạn gốc, câu nghi sai **tô vàng**, kèm dòng "Đang chờ giảng viên xác nhận".
+- ③ Nhãn **"⚠ Tài liệu có câu cần xem lại"** trên câu trả lời.
+- ④ **Thẻ trạng thái chuyển TA**. Thẻ do tool `chuyen_TA` sinh ra, không phải do AI tự viết: "Đã gửi TA lúc 22:15 · Lý do: tài liệu §3.3 nghi sai · TA trực 08:00–22:00 → phản hồi **từ 08:00 ngày 14/11** · [Rút lại]".
+- ⑤ Nút **"Câu trả lời này sai chỗ nào?"**.
+
+**Người dùng làm gì tiếp:**
+- Tự kiểm với hai số 4 và 0,04: được 2 nhỏ hơn 4, còn 0,2 lớn hơn 0,04. Học viên tự thấy quy luật, đúng tinh thần Study mode.
+- Học tiếp Bài tập 3, vì bài này không phụ thuộc câu sai.
+- Bấm [Rút lại] nếu không muốn gửi TA.
+- **Nếu học viên không làm gì:** câu hỏi vẫn nằm trong hàng chờ TA. Cờ trên §3.3 vẫn bật, nên học viên khác tra §3.3 cũng thấy cảnh báo.
+
+**Ai được báo, sau bao lâu:**
+- **TA**, lúc **08:00 ngày 14/11** (đầu ca). Thẻ ưu tiên "Tài liệu nghi sai" có sẵn: đoạn §3.3, phản ví dụ 0,25 → 0,5, và số học viên đã hỏi câu tương tự. TA không cần hỏi lại học viên.
+- **Giảng viên**: TA chuyển tiếp để sửa tài liệu.
+- **Cả lớp**: AI chỉ **soạn nháp** FAQ đính chính. TA duyệt thì mới đăng (xem mức của `dang_FAQ` ở §4).
+- **Học viên**: nhận thông báo trong chat khi TA trả lời.
+
+**Quyết định: chọn cách xử lý nào**
+
+| Phương án | Chọn / loại | Vì sao |
+|---|---|---|
+| **Trả lời kèm giới hạn + gửi TA nhưng không bắt chờ** | **Chọn** | Học viên được gỡ rối ngay lúc 22:15 với phần đúng của §3.3 và một phản ví dụ tự kiểm được. Việc sửa tài liệu vẫn thuộc về giảng viên |
+| Trích tài liệu như thường ("tài liệu nói vậy") | Loại | Đúng quy trình "chỉ dựa vào tài liệu" nhưng dạy sai. Đây chính là lỗi cần chặn |
+| Hỏi lại | Loại | Câu hỏi đã rõ, không thiếu thông tin. Hỏi lại chỉ kéo dài lúc tối muộn |
+| Dừng và chỉ chuyển TA | Loại | TA nghỉ tới 08:00, học viên kẹt cả đêm và có thể tin câu sai |
+| Bảo học viên "em tự báo giảng viên nhé" (bản nháp ở §2) | Loại | Đẩy việc cho học viên mà học viên không có kênh nào. AI không có tool "báo giảng viên", nên đường báo đúng là `chuyen_TA` |
+
+> **Thay đổi so với bản nháp ở §2:** bản nháp ghi "không chuyển TA vì TA đã nghỉ". Nhóm đổi thành **"gửi TA, nhưng không bắt học viên chờ"**. Lý do: TA nghỉ chỉ có nghĩa là không *chờ* được, chứ không có nghĩa là không *báo*. Không báo thì tài liệu sai vẫn nằm đó cho cả lớp.
+
+**Loại lỗi: lỗi ngữ cảnh.**
+- **Vì sao là lỗi ngữ cảnh:** hệ thống chạy đúng thiết kế. `tra_cuu_tai_lieu` trả đúng đoạn §3.3, AI trích đúng. Nhưng chính nguồn bị sai, nên kết quả vẫn sai với học viên.
+- **Cách nói:** không xin lỗi kiểu "mình nhầm", vì AI không tính nhầm. Thay vào đó nói rõ nguồn: *"tài liệu ghi X, ví dụ này cho thấy Y"*. Học viên cũng **không** sai, nên AI tuyệt đối không nói "em xem lại phép tính".
+- **Cách sửa:** sửa **thiết kế**, không chỉ sửa câu chữ. Cụ thể là thêm cờ "nghi sai" trên đoạn tài liệu và một luồng báo lên (xem 3.4).
+
+**So sánh với lỗi hệ thống trong cùng chủ đề:** giả sử hôm trước AI đã trích nguyên câu §3.3, nay học viên quay lại hỏi "hôm qua bạn bảo luôn nhỏ hơn mà?". Lúc này đó là **lỗi hệ thống của AI**, vì AI đã trích mà không kiểm. Cách nói sẽ khác: AI nhận lỗi và đính chính rõ ràng: *"Hôm trước mình trích nguyên câu §3.3 mà chưa kiểm, câu đó chưa đúng khi phương sai nhỏ hơn 1…"*.
+
+---
+
+### 3.2 Kịch bản #2: Xin giải bài 3 (bài đang mở)
+
+**Bối cảnh:** 23:10 ngày 13/11. Học viên nhắn: "Giải giúp em bài 3 với, mai nộp rồi". Thực tế trang khoá học ghi hạn là **13/11 23:59**, tức **hôm nay, còn 49 phút**, không phải ngày mai.
+
+**AI nói (nguyên văn):**
+
+> Em lưu ý nhé: theo trang khoá học, Bài tập 3 hạn **23:59 hôm nay (13/11)**, còn khoảng 49 phút, không phải ngày mai.
+>
+> Vì bài đang mở nên mình không giải hộ và không đưa đáp số. Mình đi cùng em từng bước:
+> - **Câu (a), trung bình (§3.1):** cộng tất cả các giá trị rồi chia cho số giá trị. Dãy của em có mấy giá trị?
+> - **Câu (a), trung vị (§3.2):** sắp xếp tăng dần. Số giá trị là chẵn thì lấy trung bình cộng của hai giá trị đứng giữa.
+> - **Câu (b):** khi có hai con số rồi, em đọc lại câu cuối của §3.1 và §3.2, xem mỗi con số bị ảnh hưởng thế nào bởi giá trị ngoại lai.
+>
+> Em làm bước đầu rồi gửi mình *cách em tính*. Mình góp ý cách làm, nhưng không xác nhận con số.
+
+**Người dùng thấy:**
+- ⑥ Banner **"Bài tập 3 · đang mở · hạn 23:59 hôm nay · còn 49 phút"**. Dữ liệu lấy từ trang khoá học, không do AI tự đoán.
+- ⑦ Nhãn **"Chỉ gợi ý: bài đang mở"**.
+- ② Chip **§3.1**, **§3.2** mở được đoạn gốc.
+- ⑧ Các nút:
+  - [Gợi ý tiếp]: tối đa 2 bậc, không bậc nào chứa số liệu của §3.5.
+  - [Xem lời giải mẫu Bài tập 2]: bài đã hết hạn, được giải đầy đủ.
+  - [Hỏi TA (phản hồi từ 08:00 14/11, **sau hạn nộp**)].
+- **Không có nút "Xem đáp án"** ở bất kỳ đâu.
+
+**Người dùng làm gì tiếp:**
+- Tự tính theo 2 bước.
+- Mở lời giải mẫu Bài tập 2 để xem một lời giải hoàn chỉnh trên một dãy khác.
+- Hoặc bấm Hỏi TA, khi đã biết rõ TA trả lời sau hạn.
+- **Nếu học viên không làm gì:** không có gì tự xảy ra. AI không tự gửi thêm gợi ý, không tự chuyển TA.
+
+**Ai được báo, sau bao lâu:**
+- **Không cần báo ai ngay.** Ở thiết kế này lỗi đã bị chặn, không có gì phải gỡ.
+- **TA, 08:00 ngày 14/11**, thấy một dòng tổng hợp **ẩn danh**: "N học viên xin giải Bài tập 3 trong đêm trước hạn". Đây là tín hiệu cho TA và giảng viên biết đề đang làm nhiều người kẹt, để ôn lại trên lớp. Dòng này không nêu tên vì không phải để bắt lỗi học viên.
+- Nếu học viên bấm Hỏi TA thì câu hỏi vào hàng chờ như ở ④.
+
+**Quyết định: chọn cách xử lý nào**
+
+| Phương án | Chọn / loại | Vì sao |
+|---|---|---|
+| **Trả lời kèm giới hạn (gợi ý bước đầu + lời giải mẫu Bài 2)** | **Chọn** | Học viên vẫn được giúp ngay trong 49 phút còn lại mà không bị làm hộ. Lời giải mẫu Bài 2 cho học viên thấy một bài giải hoàn chỉnh mà không lộ Bài 3 |
+| Giải hộ / đưa đáp số | Loại | Vi phạm phạm vi (§1, việc không làm số 1). Học viên đã chép thì không đảo được |
+| Từ chối cụt ("Mình không hỗ trợ bài tập") | Loại | Bỏ rơi học viên lúc 23:10. Học viên dễ đi chép đáp án ở chỗ khác và mất cơ hội học |
+| Hỏi lại ("em kẹt câu a hay b?") | Loại làm bước đầu | Chỉ còn 49 phút, gợi ý cả hai câu trong một lượt nhanh hơn một vòng hỏi đáp. Câu cuối "gửi mình cách em tính" đã là lời mời trao đổi tiếp |
+| Dừng và chuyển TA | Loại làm hướng chính | TA trả lời từ 08:00, **sau hạn**, nên chờ là vô ích. Chỉ giữ làm nút phụ, ghi rõ giờ |
+
+**Loại lỗi: một lỗi hệ thống (nếu xảy ra) và một lỗi người dùng.**
+- **Lỗi hệ thống (nếu AI đưa đáp số):** hệ thống đã làm việc nằm ngoài thẩm quyền.
+  - *Cách sửa:* chặn bằng **thiết kế**. `goi_y_bai_tap` đọc trạng thái bài từ trang khoá học; bài đang mở thì không có đường nào trả ra con số của §3.5, và màn hình không có nút đáp án.
+  - *Cách nói:* không xin lỗi, vì không có lỗi nào xảy ra. Thay vào đó **giải thích vì sao** không đưa đáp số ("vì bài đang mở").
+- **Lỗi người dùng:** học viên nhớ nhầm hạn ("mai nộp").
+  - *Cách nói:* đính chính nhẹ nhàng, dựa vào trang khoá học, không trách ("Em lưu ý nhé…"), và đặt câu này **lên đầu** vì nó ảnh hưởng tới việc nộp bài.
+  - *Cách sửa:* banner ⑥ luôn hiện hạn thật và thời gian còn lại, để học viên không phải nhớ.
+
+---
+
+### 3.3 Nguyên tắc HAX/PAIR: mỗi nguyên tắc trỏ vào một chỗ
+
+| Nguyên tắc | Chỗ cụ thể | Kịch bản |
+|---|---|---|
+| **G2: Làm rõ AI làm tốt tới đâu** (kèm G1 và Điều 11 Luật AI 134/2025) | ① badge "Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3"; ③ nhãn "⚠ Tài liệu có câu cần xem lại"; ⑦ nhãn "Chỉ gợi ý: bài đang mở" | #1, #2 |
+| **G11 + PAIR Explainability: Giải thích vì sao, cho tự kiểm căn cứ** | ② chip §3.3 / §3.1 / §3.2 mở đoạn gốc; phản ví dụ "0,25 → 0,5" kèm bài tự kiểm (4 và 0,04); câu "Vì bài đang mở nên…" | #1, #2 |
+| **G10: Thu hẹp phạm vi khi nghi ngờ** | ⑥ banner bài đang mở và ⑧ chỉ có gợi ý bậc đầu, **không có nút đáp án**; ở #1 AI tách phần đúng của §3.3 ra khỏi câu nghi sai thay vì bác bỏ cả mục | #2, #1 |
+| *Phụ:* **PAIR Errors + Graceful Failure** | ④ thẻ chuyển TA có giờ phản hồi thật và nút [Rút lại] | #1 |
+| *Phụ:* **G15: Mời feedback chi tiết** | ⑤ nút "Câu trả lời này sai chỗ nào?" | #1 |
+
+---
+
+### 3.4 Lỗi mà sửa câu chữ không cứu được
+
+**1. Kịch bản #1: AI trung thành lặp lại tài liệu sai.**
+- **Vì sao câu chữ không cứu được:** luật gốc là "chỉ dựa vào tài liệu". Thêm vào prompt "hãy kiểm tra tài liệu" cũng không chắc chắn. Quan trọng hơn, **những học viên khác không hỏi** vẫn đọc §3.3 sai. Sửa một câu trả lời không sửa được nguồn.
+- **Thiết kế cứu:**
+  - **Cờ "nghi sai" gắn vào đoạn §3.3** trong kho tài liệu. Từ lúc đó, mọi lần `tra_cuu_tai_lieu` trả §3.3 đều kèm cảnh báo ③ và câu tô vàng ②, cho tới khi giảng viên xác nhận hoặc sửa.
+  - **Luồng báo lên** qua `chuyen_TA`, có nhãn "tài liệu nghi sai" (thẻ ④).
+  - **FAQ đính chính** do AI soạn nháp, TA duyệt mới đăng.
+- **Lỗi còn lại:** cờ chỉ bật khi có học viên nêu phản ví dụ. Nếu không ai hỏi thì §3.3 vẫn được trích nguyên văn. Lỗi này ghi lại ở §6.
+
+**2. AI nói "mình đã báo TA" (liên quan #1, và #4 ở §2).**
+- **Vì sao câu chữ không cứu được:** nếu chỉ có câu chữ, AI có thể nói đã báo khi chưa gọi tool, hoặc hứa "TA sẽ trả lời ngay" lúc TA đã nghỉ.
+- **Thiết kế cứu:** việc "đã gửi" **chỉ được hiển thị qua thẻ trạng thái ④ do `chuyen_TA` trả về**. Giờ phản hồi trên thẻ được tính từ giờ TA trên trang khoá học. Câu chữ của AI chỉ được trỏ tới thẻ ("thẻ bên dưới"), không được tự khẳng định.
 
 ## §4. Mức tự chủ  (chặng 4)
 

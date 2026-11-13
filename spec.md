@@ -59,6 +59,8 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 * Cách xử lý: trả lời kèm giới hạn, không chuyển TA ngay (TA trả lời sau hạn nộp).
 * Loại lỗi: thẩm quyền. Phải chặn từ tool, vì chỉ một câu "đúng rồi" là đã lộ đáp số.
 
+Kịch bản suýt được chọn là #5: học viên xin bỏ số 45, AI tự đăng câu trả lời lên FAQ. Ca này cũng nguy hiểm vì cả lớp đọc phải câu sai. Em không chọn vì chỉ cần đặt dang_FAQ ở mức "cần TA duyệt" là chặn được. Còn #1 và #2 thì sai ngay trong câu trả lời, không có bước nào để chặn trước.
+
 ## §3. Khi AI sai  (chặng 3)
 
 Với mỗi kịch bản đắt nhất:

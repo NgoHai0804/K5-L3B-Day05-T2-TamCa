@@ -4,9 +4,9 @@
 
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 | ------------ | -------------- | --------------- |
-|              |                |                 |
-|              |                |                 |
-|              |                |                 |
+| Trần Thị Nhài | 2A202603911 | Điều phối kiểm chứng/phỏng vấn · viết Problem Statement · vẽ quy trình |
+| Ngô Ngọc Hải | 2A202603939 | Nhóm trưởng (repo owner) · điều phối chung · research giải pháp · mức can thiệp AI |
+| Trần Hữu Tài | 2A202603944 | Thư ký/ghi chép group_report · phản biện chính · phỏng vấn/survey · quyết định |
 
 ## §1. Lát cắt & phạm vi
 
@@ -291,7 +291,7 @@ Mỗi mức đều có giá:
 
 ## §5. Prototype  (chặng 5)
 
-**File:** `prototype/index.html` (mở bằng trình duyệt; 1 file, vanilla JS). **Công cụ:** HTML/CSS/JS tự viết. **Mock:** toàn bộ dữ liệu (tài liệu buổi 3, trang khoá học, hàng chờ TA) là dữ liệu dựng; nút "Gửi" không gọi model. **Lời gọi AI thật:** không (bài thiết kế).
+**File:** `prototype/index.html` (mở bằng trình duyệt; 1 file, vanilla JS). **Công cụ:** HTML/CSS/JS tự viết. **Mock:** toàn bộ dữ liệu (tài liệu buổi 3, trang khoá học, hàng chờ TA) là dữ liệu dựng; nút "Gửi" không gọi model. **Lời gọi AI thật:** không (bài thiết kế). Giao diện dùng token theo design system web của nhóm: Brand `#2563EB`, body 13/18, control cao 32 · radius 8, header 48, nền list xám `#F5F5F5`.
 
 **Hai màn hình:** *Học viên* (khung chat) và *TA* (hàng chờ + duyệt FAQ + bảng mức tự chủ). Cột "Câu hỏi" bên trái phủ đủ **10 kịch bản §2**; **bốn đường UX ở §3.0** đều bấm được (happy path #7 · low-confidence #10 · failure #1 · correction #1 đưa phản ví dụ).
 

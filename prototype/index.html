@@ -4,146 +4,217 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Nhập môn phân tích dữ liệu · Trợ lý học bài</title>
+<title>Trợ lý học bài | Nhập môn phân tích dữ liệu</title>
 <style>
+  /* Tokens — stack-kit/specs/web/styles/color.md + typography.md */
   :root{
-    --bg:#f4f5f6; --surface:#fff; --subtle:#f0f2f4;
-    --ink:#1b2430; --ink-soft:#495764; --ink-faint:#788692;
-    --line:#e2e6ea; --line-strong:#ccd3d9;
-    --accent:#2f5d8a; --accent-soft:#e9f0f6; --accent-strong:#234a70;
-    --warn:#8a5600; --warn-soft:#fbf1de; --warn-line:#e6cd9b;
-    --good:#1c6b46; --good-soft:#e7f3ec;
-    --mute-soft:#eceff2;
-    --r:8px; --r-lg:12px;
-    --shadow:0 1px 2px rgba(20,30,40,.05);
-    --font:'Inter','Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --brand:#2563EB; --brand-hover:#1D4ED8; --brand-press:#1E40AF; --brand-dis:#93C5FD;
+    --brand-l:#EFF6FF; --brand-l-hover:#DBEAFE;
+    --ink:#1F1F1F; --ink-2:#3D3D3D; --ink-sec:#5D5D5D; --ink-hint:#888888;
+    --n200:#E5E5E5; --border:#E4E4E4; --stroke:#D1D1D1; --divider:#E0E0E0;
+    --page:#F5F5F5; --readonly:#F6F6F6;
+    --warn:#EA540C; --warn-soft:#FCEAD2; --danger:#D82424; --danger-soft:#FCD8D8;
+    --success:#12A248; --success-press:#156634; --success-soft:#D8FCE4;
+    --surface:#fff; --r:8px; --font:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
   }
   *{box-sizing:border-box}
   [hidden]{display:none!important}
   html,body{margin:0;height:100%}
-  body{font:15px/1.6 var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
-  button{font:inherit;cursor:pointer;color:inherit}
+  body{font:400 13px/18px var(--font);color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+  button,input{font:inherit;color:inherit}
+  button{cursor:pointer}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+  .scroller{overflow:auto;scrollbar-width:thin}
+  .scroller::-webkit-scrollbar{width:6px;height:6px}
+  .scroller::-webkit-scrollbar-thumb{background:#C4C4C4;border-radius:3px}
+  .scroller::-webkit-scrollbar-track{background:transparent}
+  .faint{color:var(--ink-hint)}
 
-  .top{flex:none;height:58px;display:flex;align-items:center;gap:16px;padding:0 32px;background:var(--surface);border-bottom:1px solid var(--line)}
-  .brand{font-weight:600}
-  .crumb{color:var(--ink-faint)}
+  /* Header bar — patterns/header-bar.md */
+  .top{flex:none;height:48px;display:flex;align-items:center;gap:16px;padding:0 16px;background:var(--brand);color:#fff}
+  .top-left{display:flex;align-items:baseline;gap:12px;min-width:0}
+  .app-name{font-size:16px;font-weight:600;color:#fff;white-space:nowrap}
+  .crumb{font-size:13px;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .spacer{flex:1}
-  .seg{display:flex;background:var(--subtle);border:1px solid var(--line);border-radius:var(--r);padding:3px}
-  .seg button{border:0;background:transparent;color:var(--ink-soft);padding:6px 16px;border-radius:6px;font-size:14px}
-  .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:500}
-  .icon-btn{height:34px;padding:0 12px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);color:var(--ink-soft);font-size:13px;font-weight:500}
-  .icon-btn.on{border-color:var(--accent);color:var(--accent-strong);background:var(--accent-soft)}
+  .top-right{display:flex;align-items:center;gap:8px}
+  .top :focus-visible{outline-color:#fff}
+  .seg{display:flex;gap:2px;padding:3px;border-radius:var(--r);background:rgba(255,255,255,.15)}
+  .seg button{border:0;background:transparent;color:rgba(255,255,255,.85);padding:5px 12px;border-radius:6px;font-size:13px;font-weight:500;white-space:nowrap}
+  .seg button:hover{background:rgba(255,255,255,.15);color:#fff}
+  .seg button.on{background:#fff;color:var(--brand);font-weight:600}
+  .hi-btn{height:32px;padding:0 12px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:var(--r);font-size:13px;font-weight:500;white-space:nowrap}
+  .hi-btn:hover{background:rgba(255,255,255,.15)}
+  .hi-btn.on{background:rgba(255,255,255,.25);border-color:#fff}
 
-  .page{flex:1;min-height:0;width:100%;padding:26px 32px}
-  .student{display:grid;grid-template-columns:296px minmax(0,1fr);gap:24px;height:100%}
-  .ta{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
-  .label{font-size:12px;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin:0 0 8px}
+  /* Layout — styles/layout.md */
+  .page{flex:1;min-height:0;width:100%;padding:16px}
+  .student{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;gap:16px;height:100%}
+  .ta{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+  .label{font-size:13px;font-weight:600;color:var(--ink-sec);margin:0 0 8px}
 
-  .side{display:flex;flex-direction:column;gap:18px;min-height:0}
-  .side .card{padding:18px}
-  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+  /* Sidebar */
+  .side{display:flex;flex-direction:column;gap:12px;min-height:0}
+  .side .card{padding:14px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--divider);font-size:13px}
   .row:first-of-type{border-top:0}
-  .pill{font-size:12px;padding:3px 9px;border-radius:999px;font-weight:500;white-space:nowrap}
-  .pill.open{background:var(--warn-soft);color:var(--warn)}
-  .pill.mute{background:var(--mute-soft);color:var(--ink-soft)}
-  .pill.ok{background:var(--good-soft);color:var(--good)}
-  .faint{color:var(--ink-faint)}
-  .history{display:flex;flex-direction:column;gap:2px}
-  .history button{text-align:left;border:0;background:transparent;border-radius:var(--r);padding:9px 10px;color:var(--ink-soft);font-size:14px;display:flex;justify-content:space-between;gap:10px}
-  .history button:hover{background:var(--subtle)}
-  .history button.on{background:var(--accent-soft);color:var(--accent-strong)}
-  .history time{font-size:12px;color:var(--ink-faint)}
+  .pill{font-size:12px;padding:2px 8px;border-radius:999px;font-weight:600;white-space:nowrap;display:inline-block}
+  .p-auto{background:var(--success-soft);color:var(--success-press)}
+  .p-ask{background:var(--warn-soft);color:var(--warn)}
+  .p-no{background:var(--danger-soft);color:var(--danger)}
+  .history{display:flex;flex-direction:column;gap:2px;max-height:340px}
+  .history button{display:flex;justify-content:space-between;gap:8px;text-align:left;border:0;background:transparent;height:30px;padding:0 8px;border-radius:6px;color:var(--ink);font-size:13px;font-weight:500;align-items:center}
+  .history button:hover{background:var(--page)}
+  .history button.on{background:var(--brand-l);color:var(--brand);font-weight:600}
+  .history time{font-size:12px;color:var(--ink-hint);font-weight:400}
 
-  .chat{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-  .chat-head{padding:13px 28px;border-bottom:1px solid var(--line);background:var(--surface);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .thread{flex:1;overflow:auto;padding:32px 40px;display:flex;flex-direction:column;gap:24px}
-  .msg{max-width:760px}
-  .msg.me{align-self:flex-end;background:var(--ink);color:#fff;padding:10px 15px;border-radius:14px 14px 4px 14px;font-size:14.5px}
-  .msg.ai{align-self:flex-start;width:100%}
-  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:500;padding:4px 11px;border-radius:999px}
+  /* Case column */
+  .casecol{display:flex;flex-direction:column;min-height:0;gap:12px}
+  .casebar{flex:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px}
+  .casebar-label{font-size:12px;color:var(--ink-sec)}
+  .casebar .seg{background:var(--page)}
+  .casebar .seg button{color:var(--ink-sec)}
+  .casebar .seg button:hover{background:var(--n200);color:var(--ink)}
+  .casebar .seg button.on{background:var(--brand);color:#fff}
+
+  .chat{display:flex;flex-direction:column;min-height:0;overflow:hidden;flex:1}
+  .chat-head{flex:none;padding:12px 20px;border-bottom:1px solid var(--divider);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .thread{flex:1;padding:20px 24px;display:flex;flex-direction:column;gap:20px}
+  .msg{max-width:720px}
+  .msg.me{align-self:flex-end;background:var(--brand-l);color:var(--ink);border:1px solid var(--brand-l-hover);padding:8px 12px;border-radius:12px 12px 4px 12px;font-size:16px;line-height:20px}
+  .msg.ai{align-self:flex-start;width:100%;font-size:16px;line-height:20px}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
   .badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
-  .badge.lock{background:var(--accent-soft);color:var(--accent-strong)}
+  .badge.lock{background:var(--brand-l);color:var(--brand)}
   .badge.warn{background:var(--warn-soft);color:var(--warn)}
-  .badge.ok{background:var(--good-soft);color:var(--good)}
+  .badge.ok{background:var(--success-soft);color:var(--success-press)}
   .ai p{margin:12px 0 0}
-
-  .banner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding:10px 14px;border:1px solid var(--warn-line);background:var(--warn-soft);border-radius:var(--r);font-size:14px;color:var(--warn)}
+  .banner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding:8px 12px;border:1px solid var(--warn-soft);background:var(--warn-soft);border-radius:var(--r);font-size:13px;color:var(--warn)}
   .banner b{color:var(--ink)}
+  .steps{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .steps li{display:flex;gap:8px;align-items:baseline;font-size:16px;line-height:20px}
+  .steps li .chip{margin-right:0}
+  .hint{margin-top:8px;font-size:12px;color:var(--ink-hint)}
 
-  .cite{margin-top:12px;border-left:3px solid var(--line-strong);padding:6px 0 6px 14px;color:var(--ink-soft);font-size:14px}
-  .cite.flag{border-left-color:var(--warn-line)}
-  .cite mark{background:var(--warn-soft);color:var(--ink);box-shadow:inset 0 -2px 0 var(--warn-line);padding:0 2px}
-  .chip{border:1px solid var(--line-strong);background:var(--surface);color:var(--accent-strong);border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;margin-right:6px}
-  .chip:hover{border-color:var(--accent);background:var(--accent-soft)}
-  .doc{margin-top:8px;padding:10px 12px;background:var(--subtle);border-radius:var(--r);font-size:13.5px;color:var(--ink-soft)}
+  .cite{margin-top:12px;border-left:3px solid var(--border);padding:6px 0 6px 12px;color:var(--ink-sec);font-size:13px}
+  .cite.flag{border-left-color:var(--warn)}
+  .cite mark{background:var(--warn-soft);color:var(--ink);box-shadow:inset 0 -2px 0 var(--warn);padding:0 2px}
+  .chip{border:1px solid var(--stroke);background:var(--surface);color:var(--brand);border-radius:999px;padding:1px 8px;font-size:12px;font-weight:600;margin-right:6px}
+  .chip:hover{border-color:var(--brand);background:var(--brand-l)}
+  .doc{margin-top:8px;padding:10px 12px;background:var(--readonly);border-radius:var(--r);font-size:13px;color:var(--ink-sec)}
   .doc.flag{background:var(--warn-soft)}
-  .flag-note{display:inline-block;margin-top:6px;font-size:12px;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:2px 9px}
+  .flag-note{display:inline-block;margin-top:6px;font-size:12px;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:2px 8px}
 
-  .ta-card{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;background:var(--subtle);max-width:560px}
-  .ta-card dl{margin:6px 0 10px;display:grid;grid-template-columns:74px 1fr;gap:4px 12px;font-size:13.5px}
-  .ta-card dt{color:var(--ink-faint)}
+  .ta-card{margin-top:12px;border:1px solid var(--border);border-radius:var(--r);padding:12px;background:var(--readonly);max-width:520px}
+  .ta-card dl{margin:6px 0 10px;display:grid;grid-template-columns:70px 1fr;gap:4px 12px;font-size:13px}
+  .ta-card dt{color:var(--ink-hint)}
   .ta-card dd{margin:0}
 
-  .actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px}
-  .btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:var(--r);font-size:14px;font-weight:500}
-  .btn:hover{border-color:var(--ink-faint)}
-  .btn:focus-visible{outline:3px solid var(--accent-soft);border-color:var(--accent)}
-  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-  .btn.primary:hover{background:var(--accent-strong)}
-  .btn.ghost{border-color:transparent;color:var(--ink-soft)}
-  .btn.ghost:hover{background:var(--subtle)}
-  .btn.small{padding:4px 11px;font-size:13px}
-  .btn[disabled]{opacity:.5;cursor:default}
+  .box{border-radius:var(--r);padding:10px 12px;margin-top:10px;font-size:13px;border-left:3px solid var(--stroke);background:var(--readonly)}
+  .box.hold{background:var(--brand-l);border-left-color:var(--brand)}
+  .box.done{background:var(--success-soft);border-left-color:var(--success)}
+  .box.warn{background:var(--warn-soft);border-left-color:var(--warn)}
+  .box.red{background:var(--danger-soft);border-left-color:var(--danger)}
+  .box .btns{margin-top:8px}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700}
 
-  .note{margin-top:14px;padding:10px 14px;border-radius:var(--r);font-size:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--good-soft);color:var(--good);max-width:620px}
+  /* Buttons */
+  .actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+  .btn{height:32px;min-width:80px;padding:0 12px;border:1px solid var(--stroke);background:var(--surface);color:var(--ink);border-radius:var(--r);font-size:13px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .btn:hover{background:var(--page);border-color:var(--ink-hint)}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+  .btn.primary:active{background:var(--brand-press)}
+  .btn.ghost{border-color:transparent;background:transparent;color:var(--brand)}
+  .btn.ghost:hover{background:var(--brand-l);border-color:transparent}
+  .btn.small{height:28px;min-width:0;padding:0 10px;font-size:12px}
+  .btn[disabled]{background:var(--page);border-color:var(--border);color:var(--ink-hint);cursor:default}
+
+  .note{margin-top:12px;padding:8px 12px;border-radius:var(--r);font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--success-soft);color:var(--success-press);max-width:560px}
   .note .btn{margin-left:auto;background:transparent;border-color:currentColor;color:currentColor}
 
-  .composer{flex:none;border-top:1px solid var(--line);padding:14px 28px 18px;display:flex;gap:10px}
-  .composer input{flex:1;border:1px solid var(--line-strong);border-radius:var(--r);padding:11px 14px;font:inherit;color:var(--ink);background:var(--surface)}
-  .composer input:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+  .composer{flex:none;border-top:1px solid var(--divider);padding:12px 20px;display:flex;gap:8px}
+  .composer input{flex:1;height:32px;padding:0 12px;border:1px solid var(--stroke);border-radius:var(--r);background:var(--surface)}
+  .composer input::placeholder{color:var(--ink-hint)}
+  .composer input:hover{border-color:var(--brand)}
+  .composer input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-l)}
+  .composer .btn.primary{min-width:64px}
 
-  .ta-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
-  .ta-head h2{margin:0;font-size:17px}
-  .agg{margin:0 0 10px;font-size:13px}
-  .q{padding:16px 20px;border-top:1px solid var(--line)}
+  /* Aside panels */
+  .aside{display:flex;flex-direction:column;gap:12px;min-height:0;overflow:auto}
+  .panel{padding:14px}
+  .panel h2{margin:0 0 8px;font-size:16px;line-height:22px;font-weight:700}
+  .promise{margin:0;font-size:13px;border-left:3px solid var(--ink);padding:6px 10px;background:var(--readonly)}
+  .tools{border-collapse:collapse;width:100%;font-size:13px}
+  .tools td,.tools th{border-bottom:1px solid var(--divider);padding:6px;text-align:left;vertical-align:top}
+  .tools th{color:var(--ink-hint);font-weight:600}
+  .tools code{font-size:12px}
+  .tools tr.changed td{background:var(--warn-soft)}
+  .ann{list-style:none;margin:0;padding:0;font-size:13px}
+  .ann li{margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
+  .ann .mk{display:inline-flex!important}
+  body:not(.marks) .ann .mk{opacity:.5}
+  .gloss{margin:0;font-size:12px}
+  .gloss dt{font-weight:600;color:var(--ink);margin-top:8px}
+  .gloss dt:first-child{margin-top:0}
+  .gloss dd{margin:2px 0 0;color:var(--ink-sec)}
+  .tip{position:fixed;left:0;top:0;z-index:1000;max-width:280px;background:#1F1F1F;color:#fff;font:400 12px/16px var(--font);padding:6px 8px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.22);pointer-events:none;opacity:0;transition:opacity .12s}
+  .tip.show{opacity:1}
+
+  /* TA */
+  .ta-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+  .ta-head h2{margin:0;font-size:16px;line-height:22px;font-weight:700}
+  .agg{margin:0 0 8px;font-size:13px}
+  .q{padding:14px 16px;border-top:1px solid var(--divider)}
   .q:first-child{border-top:0}
-  .q-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
-  .q-top b{font-weight:600}
-  .q-top time{margin-left:auto;font-size:13px;color:var(--ink-faint)}
-  .q-text{color:var(--ink-soft);font-size:14px}
+  .q-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+  .q-top b{font-weight:600;font-size:13px}
+  .q-top time{margin-left:auto;font-size:12px;color:var(--ink-hint)}
+  .q-text{color:var(--ink-sec);font-size:13px}
   .q-actions{margin-top:10px}
-  .empty{color:var(--ink-faint);text-align:center;padding:40px 20px}
-
-  .approve{padding:16px 20px}
-  .ap-body p{margin:8px 0;font-size:14px;color:var(--ink-soft)}
+  .empty{text-align:center;padding:32px 20px;color:var(--ink-sec)}
+  .empty svg{stroke:var(--ink-2)}
+  .empty h3{margin:12px 0 4px;font-size:16px;line-height:22px;font-weight:700;color:var(--ink)}
+  .empty p{margin:0;font-size:13px}
+  .approve{padding:14px 16px}
+  .ap-body p{margin:6px 0;font-size:13px;color:var(--ink-sec)}
   .ap-q b,.ap-a b{color:var(--ink)}
   .ap-actions{display:flex;gap:8px;margin-top:12px}
-  .ap-note{margin:10px 0 0;font-size:12.5px;color:var(--ink-faint)}
+  .ap-note{margin:10px 0 0;font-size:12px;color:var(--ink-hint)}
 
-  .levels{padding:6px 20px}
-  .lv{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:14px}
-  .lv:first-child{border-top:0}
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px}
+  .modal.show{display:flex}
+  .modal-card{background:var(--surface);border-radius:var(--r);padding:18px 20px;max-width:400px}
+  .modal-card b{font-size:16px;line-height:22px}
+  .modal-card p{font-size:13px;color:var(--ink-sec)}
+  .chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:10px 0}
+  .modal .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 
-  .mk{display:none;width:19px;height:19px;border-radius:50%;background:#b23c22;color:#fff;font:600 11px/19px var(--font);text-align:center;margin-left:6px;vertical-align:middle;flex:none}
+  .mk{display:none;cursor:help;width:18px;height:18px;border-radius:50%;background:var(--danger);color:#fff;font:600 11px/18px var(--font);text-align:center;margin-left:6px;vertical-align:middle;flex:none}
   body.marks .mk{display:inline-flex;align-items:center;justify-content:center}
 
-  @media (max-width:1000px){.student,.ta{grid-template-columns:1fr}.chat{min-height:620px}}
+  @media (max-width:1200px){.student{grid-template-columns:200px minmax(0,1fr)}.student .aside{display:none}}
+  @media (max-width:1000px){.student,.ta{grid-template-columns:1fr}.chat{min-height:560px}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
 <header class="top">
-  <span class="brand">Nhập môn phân tích dữ liệu</span>
-  <span class="crumb">Buổi 3 · Thống kê mô tả</span>
-  <span class="spacer"></span>
-  <div class="seg" id="view" role="tablist" aria-label="Chuyển màn hình">
-    <button type="button" class="on" data-v="student" role="tab" aria-selected="true">Học viên</button>
-    <button type="button" data-v="ta" role="tab" aria-selected="false">TA <span id="qcount"></span></button>
+  <div class="top-left">
+    <span class="app-name">Nhập môn phân tích dữ liệu</span>
+    <span class="crumb">Buổi 3 · Thống kê mô tả</span>
   </div>
-  <button type="button" class="icon-btn" id="marks" aria-pressed="false" title="Hiện số chú thích chỗ trên màn hình">Chú thích 1–9</button>
+  <span class="spacer"></span>
+  <div class="top-right">
+    <div class="seg" id="view" role="tablist" aria-label="Màn hình">
+      <button type="button" class="on" data-v="student" role="tab" aria-selected="true">Học viên</button>
+      <button type="button" data-v="ta" role="tab" aria-selected="false">TA <span id="qcount"></span></button>
+    </div>
+    <button type="button" class="hi-btn" id="marks" aria-pressed="false" title="Bật/tắt số chú thích 1–9 · rê chuột lên số để xem nguyên tắc HAX/PAIR">Chú thích 1–9</button>
+  </div>
 </header>
 
 <main class="page">
@@ -151,13 +222,13 @@
     <aside class="side">
       <div class="card">
         <p class="label">Bài tập</p>
-        <div class="row"><span>Bài 3</span><span class="pill open">Hạn 13/11 · 23:59</span></div>
-        <div class="row"><span>Bài 2</span><span class="pill mute">Đã có đáp án</span></div>
+        <div class="row"><span>Bài 3</span><span class="pill p-ask">Hạn 13/11 · 23:59</span></div>
+        <div class="row"><span>Bài 2</span><span class="pill p-auto">Đã có đáp án</span></div>
         <div class="row"><span>Giờ TA</span><span class="faint">08:00–22:00</span></div>
       </div>
       <div class="card">
         <p class="label">Câu hỏi</p>
-        <div class="history" id="hist">
+        <div class="history scroller" id="hist">
           <button type="button" data-s="closed"><span>Đáp án bài 2</span><time>20:00</time></button>
           <button type="button" data-s="slide12"><span>Slide 12</span><time>21:00</time></button>
           <button type="button" data-s="wrongdoc"><span>Độ lệch chuẩn</span><time>22:15</time></button>
@@ -172,18 +243,41 @@
       </div>
     </aside>
 
-    <div class="card chat">
-      <div class="chat-head">
-        <span class="badge lock"><span class="dot"></span>Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3<span class="mk">1</span></span>
-        <span class="badge ok" id="notif" hidden></span>
+    <div class="casecol">
+      <div class="casebar">
+        <span class="casebar-label">Thử mức tự chủ cho việc <b>gợi ý bài đang mở</b> (mức nhóm chọn: <b>1</b>):</span>
+        <div class="seg" id="levels" role="group" aria-label="Thử mức tự chủ">
+          <button type="button" class="on" data-l="1">1 · Chỉ gợi ý bước đầu</button>
+          <button type="button" data-l="2">2 · Cần học viên xác nhận</button>
+          <button type="button" data-l="3">3 · Tự đưa đáp số</button>
+        </div>
       </div>
-      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Hội thoại với trợ lý"></div>
-      <form class="composer" id="composer">
-        <label class="sr-only" for="input">Nhập câu hỏi</label>
-        <input id="input" placeholder="Hỏi về bài học..." autocomplete="off">
-        <button class="btn primary" type="submit">Gửi</button>
-      </form>
+      <div class="card chat">
+        <div class="chat-head">
+          <span class="badge lock"><span class="dot"></span>Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3<span class="mk">1</span></span>
+          <span class="badge ok" id="notif" hidden></span>
+        </div>
+        <div class="thread scroller" id="thread" role="log" aria-live="polite" aria-label="Hội thoại với trợ lý"></div>
+        <form class="composer" id="composer">
+          <label class="sr-only" for="input">Nhập câu hỏi</label>
+          <input id="input" placeholder="Hỏi về bài học..." autocomplete="off">
+          <button class="btn primary" type="submit">Gửi</button>
+        </form>
+      </div>
     </div>
+
+    <aside class="aside">
+      <div class="card panel"><h2>Lời hứa với người học ở mức này</h2><p class="promise" id="promise"></p></div>
+      <div class="card panel">
+        <h2>Mức tự chủ của các tool</h2>
+        <table class="tools">
+          <thead><tr><th>Tool</th><th>Mức</th></tr></thead>
+          <tbody id="tools"></tbody>
+        </table>
+      </div>
+      <div class="card panel"><h2>Nguyên tắc nằm ở đâu</h2><ul class="ann" id="ann"></ul></div>
+      <div class="card panel"><h2>Chú thích HAX/PAIR</h2><dl class="gloss" id="gloss"></dl></div>
+    </aside>
   </section>
 
   <section class="ta" id="ta" hidden>
@@ -191,24 +285,35 @@
       <div class="ta-head"><h2>Hàng chờ<span class="mk">9</span></h2><span class="faint" id="qsub">Không có câu hỏi mới</span></div>
       <p class="agg faint" id="agg"></p>
       <div class="card" id="qlist"></div>
-
-      <div class="ta-head" style="margin-top:22px"><h2>Duyệt đăng FAQ cả lớp</h2><span class="pill open">cần người duyệt</span></div>
+      <div class="ta-head" style="margin-top:16px"><h2>Duyệt đăng FAQ cả lớp</h2><span class="pill p-ask">cần người duyệt</span></div>
       <div class="card approve" id="approve"></div>
-    </div>
-
-    <div>
-      <div class="ta-head"><h2>Trợ lý được làm gì</h2></div>
-      <div class="card levels" id="levels">
-        <div class="lv"><span>Tra tài liệu</span><span class="pill ok">Tự làm</span></div>
-        <div class="lv"><span>Chuyển câu hỏi cho TA</span><span class="pill ok">Tự làm · hoàn tác được</span></div>
-        <div class="lv"><span>Gợi ý bài đang mở</span><span class="pill open">Chỉ bước đầu · tối đa 2 bậc</span></div>
-        <div class="lv"><span>Soạn nháp FAQ</span><span class="pill ok">Tự làm (chưa ai đọc)</span></div>
-        <div class="lv"><span>Đăng FAQ cả lớp</span><span class="pill open">Cần TA duyệt</span></div>
-        <div class="lv"><span>Đưa / xác nhận đáp số bài đang mở</span><span class="pill mute">Không làm</span></div>
+      <div class="ta-head" style="margin-top:16px"><h2>Trợ lý được làm gì (mức tự chủ)</h2></div>
+      <div class="card panel">
+        <table class="tools">
+          <thead><tr><th>Tool</th><th>Mức</th></tr></thead>
+          <tbody id="taTools"></tbody>
+        </table>
       </div>
+    </div>
+    <div>
+      <div class="ta-head"><h2>Tổng hợp đêm trước hạn (ẩn danh)</h2></div>
+      <div class="card panel" id="summary"></div>
     </div>
   </section>
 </main>
+
+<div class="modal" id="m2" role="dialog" aria-modal="true" aria-labelledby="m2t">
+  <div class="card modal-card">
+    <b id="m2t">Đăng câu hỏi này lên FAQ cả lớp?</b>
+    <p>Đăng rồi thì <b>không thu hồi</b> với người đã đọc, nên chỉ đăng khi nội dung chắc đúng.</p>
+    <div id="m2body"></div>
+    <label class="chk"><input type="checkbox" id="m2ok"> Mình hiểu đăng là cả lớp đọc, không rút lại</label>
+    <div class="btns">
+      <button type="button" class="btn primary" id="m2send" disabled>Đăng</button>
+      <button type="button" class="btn" id="m2cancel">Quay lại</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -216,6 +321,9 @@ const thread = $('#thread');
 const dismissed = new Set();
 let queue = [];
 let pendingFaq = null;
+let current = 'open';
+let L = 1;
+let timerId = null;
 
 const DOCS = {
   '3.1':'§3.1 Trung bình cộng. Tổng các giá trị chia cho số giá trị. Trung bình bị kéo mạnh bởi giá trị ngoại lai.',
@@ -225,142 +333,290 @@ const DOCS = {
   '3.5':'§3.5 Bài tập 3. Lương tháng 8 nhân viên (triệu đồng): 9, 10, 10, 11, 12, 12, 13, 45. (a) tính trung bình và trung vị; (b) con số nào mô tả "lương điển hình" tốt hơn?'
 };
 
-const S = {
-  closed: {
-    q: 'Bài 2 sao đáp án là 6 vậy ạ?',
-    a: `
+const Q = {
+  closed:'Bài 2 sao đáp án là 6 vậy ạ?',
+  slide12:'Slide 12 thầy nói về độ lệch, giải thích lại giúp em',
+  wrongdoc:'Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?',
+  ambiguous:'Cái độ lệch ấy là gì ạ, em đọc không hiểu',
+  deadline:'Hạn bài 3 khi nào ạ? Em xin gia hạn, báo TA giúp em',
+  selfdoubt:'Em học kém quá, chắc em không có năng khiếu',
+  open:'Giải giúp em bài 3 với, mai nộp rồi ạ',
+  outlier:'Bỏ số 45 đi cho đẹp được không ạ? Nhiều bạn cũng hỏi',
+  confirm:'Em ra trung bình 15,25, trung vị 11,5 đúng không ạ?',
+  future:'p-value là gì ạ, em thấy trên mạng'
+};
+
+const chip = id => `<button type="button" class="chip" aria-expanded="false" onclick="openDoc('${id}',this)">§${id}<span class="mk">2</span></button>`;
+
+const FIXED = {
+  closed: `
       <span class="badge ok"><span class="dot"></span>Đã có đáp án</span>
       <p>Bài 2 đã hết hạn nên mình giải đầy đủ:</p>
-      <div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.1',this)">§3.1<span class="mk">2</span></button>(4 + 8 + 6 + 5 + 7) / 5 = 30 / 5 = <b>6</b></div>`
-  },
-  slide12: {
-    q: 'Slide 12 thầy nói về độ lệch, giải thích lại giúp em',
-    a: `
+      <div class="cite">${chip('3.1')}(4 + 8 + 6 + 5 + 7) / 5 = 30 / 5 = <b>6</b></div>`,
+  slide12: `
       <span class="badge warn"><span class="dot"></span>Không có nguồn này</span>
       <p>Tài liệu buổi 3 chỉ có các mục §3.1–§3.5 và <b>không có slide đánh số</b>, nên mình không tra được "slide 12".</p>
       <p>Em đang nhớ tới nội dung nào — có phải phần độ lệch chuẩn ở §3.3 không?</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="render('wrongdoc')">Đúng, phần độ lệch chuẩn</button>
+        <button type="button" class="btn" onclick="render('wrongdoc')">Phần độ lệch chuẩn</button>
         <button type="button" class="btn" onclick="ask('Em đang tìm phần: ')">Nội dung khác</button>
-      </div>`
-  },
-  wrongdoc: {
-    q: 'Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?',
-    a: `
+      </div>`,
+  wrongdoc: `
       <span class="badge warn"><span class="dot"></span>⚠ Tài liệu có câu cần xem lại<span class="mk">3</span></span>
-      <p>Theo §3.3, độ lệch chuẩn là căn bậc hai của phương sai và có cùng đơn vị với dữ liệu. Riêng câu <i>"độ lệch chuẩn luôn nhỏ hơn phương sai"</i> chưa đúng trong mọi trường hợp: khi phương sai nhỏ hơn 1 thì ngược lại. Em thử tự kiểm với 4 và 0,04 nhé.</p>
-      <div class="cite flag">
-        <button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.3',this)">§3.3<span class="mk">2</span></button>Đoạn tài liệu liên quan, câu nghi sai tô vàng.
-      </div>
+      <p>Theo §3.3, độ lệch chuẩn là căn bậc hai của phương sai và có cùng đơn vị với dữ liệu. Phần này em dùng bình thường.</p>
+      <p>Riêng câu <i>"độ lệch chuẩn luôn nhỏ hơn phương sai"</i> trong §3.3 thì <b>chưa đúng trong mọi trường hợp</b>. Khi phương sai nhỏ hơn 1, căn bậc hai của nó lại lớn hơn chính nó. Ví dụ phương sai 0,25 thì độ lệch chuẩn là √0,25 = 0,5.</p>
+      <p>Em thử tự kiểm với phương sai 4 và phương sai 0,04 xem lần nào độ lệch chuẩn nhỏ hơn, lần nào lớn hơn nhé.</p>
+      <p>Mình không sửa được tài liệu, nên đã gửi câu này cho TA để giảng viên xem lại <b>(thẻ bên dưới)</b>. Bài tập 3 không dùng tới câu này, em cứ làm bài bình thường.</p>
+      <div class="cite flag">${chip('3.3')}Đoạn tài liệu liên quan, câu nghi sai tô vàng.</div>
       <div class="ta-card" id="ta-card">
-        <span class="mk">4</span>
-        <b>Thẻ chuyển TA</b><span class="faint" style="font-size:13px"> · do <code>chuyen_TA</code> tạo</span>
+        <span class="mk">4</span><b>Thẻ chuyển TA</b><span class="faint" style="font-size:12px"> · do <code>chuyen_TA</code> tạo</span>
         <dl>
           <dt>Đã gửi</dt><dd>22:15 hôm nay</dd>
           <dt>Lý do</dt><dd>tài liệu §3.3 nghi sai</dd>
           <dt>Giờ TA</dt><dd>08:00–22:00 → phản hồi từ 08:00 ngày 14/11</dd>
         </dl>
+        <p class="hint">Hoàn tác được trong <span class="timer" data-sec="600">10:00</span>.</p>
         <button type="button" class="btn small" id="recallBtn" onclick="recallTA(this)">Rút lại</button>
       </div>
-      <p>Bài tập 3 không dùng tới câu này, em cứ làm bình thường.</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="corrected(this)">Em thử 0,04 → 0,2 (đưa phản ví dụ)</button>
+        <button type="button" class="btn" onclick="corrected(this)">Phản ví dụ 0,04 → 0,2</button>
         <button type="button" class="btn ghost" onclick="feedback(this)">Câu trả lời này sai chỗ nào?<span class="mk">5</span></button>
-      </div>`
-  },
-  ambiguous: {
-    q: 'Cái độ lệch ấy là gì ạ, em đọc không hiểu',
-    a: `
+      </div>
+      <p class="hint">Phản ví dụ sẽ gắn cờ "nghi sai" trên §3.3 và báo TA.</p>`,
+  ambiguous: `
       <span class="badge lock"><span class="dot"></span>Hỏi lại cho rõ</span>
       <p>"Độ lệch" trong câu em đang đọc là cái nào?</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="clarify(this,'std')">Độ lệch chuẩn (§3.3)</button>
-        <button type="button" class="btn" onclick="clarify(this,'skew')">Dữ liệu lệch / ngoại lai (§3.2)</button>
-      </div>`
-  },
-  deadline: {
-    q: 'Hạn bài 3 khi nào ạ? Em xin gia hạn, báo TA giúp em',
-    a: `
+        <button type="button" class="btn" onclick="clarify(this,'std')">Độ lệch chuẩn</button>
+        <button type="button" class="btn" onclick="clarify(this,'skew')">Dữ liệu lệch</button>
+      </div>
+      <p class="hint">Mình sẽ giải kèm đúng mục §3.2 hoặc §3.3.</p>`,
+  deadline: `
       <div class="banner"><span class="mk">6</span><b>Bài tập 3 · đang mở</b> · hạn 23:59 hôm nay (13/11)</div>
       <p>Hạn chỉ lấy từ trang khoá học: <b>23:59 hôm nay (13/11)</b>. Gia hạn không phải việc mình quyết — đó là việc của giảng viên.</p>
       <p>Mình <b>không</b> tự báo ai hộ em được. Em bấm nút dưới để chuyển câu hỏi cho TA.</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="toTA(this,'Xin gia hạn Bài tập 3','22:40')">Chuyển TA · trả lời từ 08:00 14/11 (sau hạn nộp)</button>
-      </div>`
-  },
-  selfdoubt: {
-    q: 'Em học kém quá, chắc em không có năng khiếu',
-    a: `
+        <button type="button" class="btn" onclick="toTA(this,'Xin gia hạn Bài tập 3','22:40')">Chuyển TA</button>
+      </div>
+      <p class="hint">Gia hạn là việc của giảng viên. TA trả lời từ 08:00 14/11 — sau hạn nộp.</p>`,
+  selfdoubt: `
       <span class="badge lock"><span class="dot"></span>Không nhận xét năng lực</span>
       <p>Mình không đánh giá năng lực của em. Kẹt ở một mục không nói lên điều gì về em cả.</p>
       <p>Em đang kẹt ở phần nào — trung bình (§3.1), trung vị (§3.2) hay độ lệch chuẩn (§3.3)? Mình đi lại từng bước.</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="ask('Em kẹt ở mục: ')">Em kẹt ở mục...</button>
-      </div>`
-  },
-  open: {
-    q: 'Giải giúp em bài 3 với, mai nộp rồi ạ',
-    a: `
-      <div class="banner"><span class="mk">6</span><b>Bài tập 3 · đang mở</b> · hạn 23:59 hôm nay (13/11) · còn 49 phút</div>
-      <span class="badge warn" style="margin-top:10px"><span class="dot"></span>Chỉ gợi ý: bài đang mở<span class="mk">7</span></span>
-      <p>Bài 3 hạn 23:59 <b>hôm nay</b>, không phải ngày mai nhé. Vì bài đang mở nên mình không giải hộ và không đưa đáp số. Mình đi cùng em từng bước:</p>
-      <div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.1',this)">§3.1<span class="mk">2</span></button>Tổng các giá trị chia cho số giá trị.</div>
-      <div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.2',this)">§3.2<span class="mk">2</span></button>Sắp xếp tăng dần; dãy có 8 số nên lấy trung bình cộng của hai số đứng giữa.</div>
-      <div class="actions" id="open-actions">
-        <button type="button" class="btn" id="hintBtn" onclick="nextHint(this)">Gợi ý tiếp<span class="mk">8</span></button>
-        <button type="button" class="btn" onclick="render('closed')">Xem lời giải mẫu Bài tập 2</button>
-        <button type="button" class="btn" onclick="toTA(this,'Xin giải Bài tập 3','23:10')">Hỏi TA · phản hồi từ 08:00 14/11 (sau hạn nộp)</button>
-      </div>`
-  },
-  outlier: {
-    q: 'Bỏ số 45 đi cho đẹp được không ạ? Nhiều bạn cũng hỏi',
-    a: `
+        <button type="button" class="btn" onclick="ask('Em kẹt ở mục: ')">Chọn phần bị kẹt</button>
+      </div>`,
+  outlier: `
       <span class="badge lock"><span class="dot"></span>Không trả lời thay đề</span>
       <p>§3.4 nói trước khi bỏ một giá trị ngoại lai phải hỏi: đây là lỗi nhập liệu hay dữ liệu thật? Bỏ số 45 là sửa đề bài — mình không quyết thay em được.</p>
       <p>"Nhiều bạn cũng hỏi" không làm mình tự đăng lên FAQ cả lớp. Mình soạn nháp để <b>TA duyệt</b> trước.</p>
       <div class="actions">
-        <button type="button" class="btn" onclick="draftFaq(this)">Soạn nháp FAQ (chờ TA duyệt)</button>
-      </div>`
-  },
-  confirm: {
-    q: 'Em ra trung bình 15,25, trung vị 11,5 đúng không ạ?',
-    a: `
-      <div class="banner"><span class="mk">6</span><b>Bài tập 3 · đang mở</b> · hạn 23:59 hôm nay (13/11) · còn 49 phút</div>
-      <span class="badge warn" style="margin-top:10px"><span class="dot"></span>Chỉ gợi ý: bài đang mở<span class="mk">7</span></span>
-      <p>Bài 3 còn mở nên mình không chấm đúng sai được. Em tự kiểm hai điều:</p>
-      <div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.1',this)">§3.1<span class="mk">2</span></button>Đã cộng đủ 8 số và chia cho 8 chưa?</div>
-      <div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('3.2',this)">§3.2<span class="mk">2</span></button>Trung vị đã lấy trung bình của <b>hai</b> số đứng giữa chưa?</div>
-      <div class="actions">
-        <button type="button" class="btn primary" onclick="ask('Em tính thế này: ')">Gửi cách tính</button>
-        <button type="button" class="btn" onclick="toTA(this,'Xin kiểm đáp số Bài tập 3','23:30')">Hỏi TA · phản hồi từ 08:00 14/11</button>
-      </div>`
-  },
-  future: {
-    q: 'p-value là gì ạ, em thấy trên mạng',
-    a: `
+        <button type="button" class="btn" onclick="draftFaq(this)">Soạn nháp FAQ</button>
+      </div>
+      <p class="hint">Nháp chờ TA duyệt trước khi đăng cho cả lớp.</p>`,
+  future: `
       <span class="badge warn"><span class="dot"></span>Chưa học</span>
       <p>p-value sẽ học ở buổi 7. Nói ngắn: nó cho biết một kết quả có thể chỉ do ngẫu nhiên hay không.</p>
       <p>Em muốn ôn lại phần nào của buổi 3 không?</p>`
-  }
 };
 
+const BANNER = `<div class="banner"><span class="mk">6</span><b>Bài tập 3 · đang mở</b> · hạn 23:59 hôm nay · còn 49 phút</div>`;
+const CONF = `<span class="badge warn"><span class="dot"></span>Chỉ gợi ý: bài đang mở<span class="mk">7</span></span>`;
+
+function givByLevel(){
+  if(L === 1){
+    return `${CONF}${BANNER}
+      <p>Bài 3 hạn <b>23:59 hôm nay</b>, không phải ngày mai. Mình không đưa đáp số vì bài đang mở. Đi từng bước:</p>
+      <ul class="steps">
+        <li>${chip('3.1')}<span>Trung bình cộng: tổng các giá trị chia cho số giá trị.</span></li>
+        <li>${chip('3.2')}<span>Trung vị: sắp xếp tăng dần, 8 số nên lấy trung bình cộng hai số giữa.</span></li>
+      </ul>
+      <div class="actions" id="open-actions">
+        <button type="button" class="btn" id="hintBtn" onclick="nextHint(this)">Gợi ý tiếp<span class="mk">8</span></button>
+        <button type="button" class="btn" onclick="render('closed')">Xem lời giải mẫu Bài tập 2</button>
+        <button type="button" class="btn" onclick="toTA(this,'Xin giải Bài tập 3','23:10')">Hỏi TA</button>
+      </div>
+      <p class="hint">TA trả lời từ 08:00 ngày 14/11 — sau hạn nộp.</p>
+      <div class="box done"><b>Mức nhóm chọn.</b> Chỉ gợi ý bước đầu, đáp số để bạn tự làm ra.</div>`;
+  }
+  if(L === 2){
+    return `${CONF}${BANNER}
+      <p>Bài 3 đang mở. Mình tính sẵn <b>trung bình 15,25</b> và <b>trung vị 11,5</b> nhưng chưa hiện.</p>
+      <div class="box hold"><b>Giữ đáp số</b> cho bạn trong <span class="timer" data-sec="300">05:00</span>.
+        <div class="btns">
+          <button type="button" class="btn primary" onclick="leak(this)">Xem đáp số</button>
+          <button type="button" class="btn" onclick="render('confirm')">Không, cho mình tự kiểm</button>
+        </div>
+      </div>
+      <div class="box red"><b>Rủi ro của mức này:</b> người "duyệt" chính là học viên đang muốn đáp số — chỉ 1 bấm là đã thấy. Bước xác nhận không chặn được gì, mà đáp số vẫn lộ và đã chép.</div>`;
+  }
+  return `${CONF}${BANNER}
+      <p>Bài 3 đang mở. Mình đã tính cho bạn:</p>
+      <div class="cite"><b>Trung bình 15,25 · Trung vị 11,5</b></div>
+      <div class="box red"><b>Rủi ro của mức này:</b> học viên đã chép đáp số, không đảo lại được — đúng kiểu "học sai/không học mà không ai biết" mà nhóm muốn tránh. Đây là mức quá tay.</div>
+      <div class="actions"><button type="button" class="btn" onclick="render('closed')">Lời giải mẫu Bài 2</button></div>`;
+}
+
+function confirmByLevel(){
+  if(L === 1){
+    return `${CONF}${BANNER}
+      <p>Bài 3 còn mở nên mình không chấm đúng/sai. Em tự kiểm 2 điểm:</p>
+      <ul class="steps">
+        <li>${chip('3.1')}<span>Đã cộng đủ 8 số và chia cho 8 chưa?</span></li>
+        <li>${chip('3.2')}<span>Trung vị đã lấy trung bình của <b>hai</b> số đứng giữa chưa?</span></li>
+      </ul>
+      <div class="actions">
+        <button type="button" class="btn primary" onclick="ask('Em tính thế này: ')">Gửi cách tính</button>
+        <button type="button" class="btn" onclick="toTA(this,'Xin kiểm đáp số Bài tập 3','23:30')">Hỏi TA</button>
+      </div>
+      <p class="hint">TA trả lời từ 08:00 ngày 14/11.</p>`;
+  }
+  if(L === 2){
+    return `${CONF}${BANNER}
+      <p>Bài 3 đang mở. Mình so sánh với đáp án đã tính sẵn nhưng chưa chấm.</p>
+      <div class="box hold">Chấm đúng/sai cho bạn? <span class="timer" data-sec="300">05:00</span>
+        <div class="btns"><button type="button" class="btn primary" onclick="leak(this)">Chấm giúp mình</button></div>
+      </div>
+      <div class="box red"><b>Rủi ro của mức này:</b> bấm xác nhận là mình nói thẳng "đúng/sai" — tức xác nhận đáp số bài đang mở. Không chặn được, chỉ thêm một bước.</div>`;
+  }
+  return `${CONF}${BANNER}
+      <p>Bài 3 đang mở. Bạn ra <b>15,25</b> và <b>11,5</b> — <b>đúng</b>.</p>
+      <div class="box red"><b>Rủi ro của mức này:</b> xác nhận đáp số bài đang mở cho học viên, không đảo lại. Mức quá tay.</div>`;
+}
+
+const PROMISE = {
+  1:'"Mình đi cùng bạn từng bước và chỉ rõ căn cứ (§3.x); bạn tự tính ra đáp số." Việc rẻ, học viên tự thấy và tự sửa được. Đáp số bài đang mở thì AI không đưa.',
+  2:'"Mình tính sẵn, bạn bấm xác nhận thì mình mới hiện." Nghe an toàn, nhưng người duyệt chính là học viên đang muốn đáp số — bước xác nhận không chặn được gì.',
+  3:'"Mình đưa luôn đáp số cho bạn." Nhanh nhất, nhưng học viên đã chép thì không đảo lại. Đây là mức quá tay ở ca này.'
+};
+
+const TOOLS = [
+  ['tra_cuu_tai_lieu','Tự làm','p-auto','Chỉ đọc; trả sai thì học viên tự kiểm qua trích §.'],
+  ['goi_y_buoc_dau','Tự làm','p-auto','Chỉ nêu bước đầu, không có số của §3.5.'],
+  ['gui_dap_so_bai_mo','Cấm','p-no','Đưa/xác nhận đáp số bài đang mở: đã chép là không đảo lại.'],
+  ['chuyen_TA','Tự làm','p-auto','Đảo lại được; chờ người để chuyển thì câu hỏi không tới TA.'],
+  ['soan_nhap_FAQ','Tự làm','p-auto','Bản nháp chưa ai đọc; sai thì sửa/xoá.'],
+  ['dang_FAQ','Cần duyệt (TA)','p-ask','Một câu sai lan ra cả lớp; gỡ được nhưng nhiều người đã đọc.']
+];
+
+const ANN = [
+  ['1','HAX G2 · làm rõ AI làm tốt tới đâu','Badge "Trợ lý AI · chỉ dựa vào tài liệu buổi 1–3": ranh giới nguồn.'],
+  ['2','HAX G11 + PAIR Explainability','Chip § mở đoạn gốc để học viên tự kiểm căn cứ; §3.3 có cờ "nghi sai" + câu tô vàng.'],
+  ['3','HAX G2 · nêu nghi ngờ, không khẳng định','Nhãn "⚠ Tài liệu có câu cần xem lại".'],
+  ['4','PAIR Errors + Graceful Failure','Thẻ chuyển TA do tool sinh, kèm giờ phản hồi thật và nút [Rút lại].'],
+  ['5','HAX G15 · mời feedback chi tiết','Nút "Câu trả lời này sai chỗ nào?".'],
+  ['6','HAX G10 · thu hẹp khi nghi ngờ','Banner bài đang mở: hạn + thời gian còn lại, lấy từ trang khoá học.'],
+  ['7','HAX G10 · thu hẹp phạm vi','Nhãn "Chỉ gợi ý: bài đang mở".'],
+  ['8','HAX G10 · không có nút đáp số','Cụm nút [Gợi ý tiếp] · [Xem lời giải mẫu Bài tập 2] · [Hỏi TA].'],
+  ['9','Cần người duyệt','Màn TA: hàng chờ + bảng mức tự chủ + duyệt FAQ (soạn nháp tự làm · đăng cần TA duyệt).']
+];
+
+const GLOSS = [
+  ['HAX G2','Làm rõ AI làm tốt tới đâu','Nói rõ ranh giới nguồn: chỉ dựa vào tài liệu buổi 1–3; nêu nghi ngờ thay vì khẳng định.'],
+  ['HAX G10','Thu hẹp phạm vi khi nghi ngờ','Bài đang mở thì chỉ gợi ý bước đầu, không đưa/không xác nhận đáp số, không có nút đáp số.'],
+  ['HAX G11','Giải thích vì sao','Mỗi câu trả lời kèm mã § để người học mở đoạn gốc và tự kiểm căn cứ.'],
+  ['HAX G15','Mời feedback chi tiết','Nút "Câu trả lời này sai chỗ nào?" để học viên chỉ ra lỗi.'],
+  ['PAIR Explainability','Cho tự kiểm căn cứ','Chip § mở đoạn gốc; phản ví dụ "0,25 → 0,5" kèm bài tự kiểm.'],
+  ['PAIR Errors + Graceful Failure','Khi sai/không chắc thì dẫn tới người','Thẻ chuyển TA do tool sinh, có giờ phản hồi thật và hoàn tác [Rút lại].']
+];
+
+const TIPS = {};
+ANN.forEach(a => { TIPS[String(a[0])] = a[1] + ' — ' + a[2]; });
+
+function applyTips(){
+  document.querySelectorAll('.mk').forEach(el => {
+    const t = TIPS[el.textContent.trim()];
+    if(t && !el.hasAttribute('data-tip')){
+      el.setAttribute('data-tip', t);
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'note');
+      el.setAttribute('aria-label', t);
+    }
+  });
+}
+
+function drawGloss(){
+  const g = $('#gloss'); if(!g) return;
+  g.innerHTML = GLOSS.map(x => `<dt>${x[0]} · ${x[1]}</dt><dd>${x[2]}</dd>`).join('');
+}
+
+const tipEl = document.createElement('div');
+tipEl.className = 'tip';
+tipEl.setAttribute('role', 'tooltip');
+document.body.appendChild(tipEl);
+function showTip(el){
+  const t = el.getAttribute('data-tip'); if(!t) return;
+  tipEl.textContent = t;
+  tipEl.classList.add('show');
+  const r = el.getBoundingClientRect();
+  const tr = tipEl.getBoundingClientRect();
+  let left = r.left + r.width / 2 - tr.width / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - tr.width - 8));
+  let top = r.top - tr.height - 8;
+  if(top < 8) top = r.bottom + 8;
+  tipEl.style.left = left + 'px';
+  tipEl.style.top = top + 'px';
+}
+function hideTip(){ tipEl.classList.remove('show'); }
+document.addEventListener('mouseover', e => { const el = e.target.closest && e.target.closest('.mk[data-tip]'); if(el) showTip(el); });
+document.addEventListener('mouseout', e => { const el = e.target.closest && e.target.closest('.mk[data-tip]'); if(el && !el.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener('focusin', e => { const el = e.target.closest && e.target.closest('.mk[data-tip]'); if(el) showTip(el); });
+document.addEventListener('focusout', e => { const el = e.target.closest && e.target.closest('.mk[data-tip]'); if(el) hideTip(); });
+window.addEventListener('scroll', () => hideTip(), true);
+window.addEventListener('resize', () => hideTip());
+document.addEventListener('keydown', e => { if(e.key === 'Escape') hideTip(); });
+
 function render(k){
-  thread.innerHTML = '<div class="msg me"></div><div class="msg ai">' + S[k].a + '</div>';
-  thread.children[0].textContent = S[k].q;
+  current = k;
+  const content = (k === 'open') ? givByLevel() : (k === 'confirm') ? confirmByLevel() : FIXED[k];
+  thread.innerHTML = '<div class="msg me"></div><div class="msg ai">' + content + '</div>';
+  thread.children[0].textContent = Q[k];
   thread.scrollTop = 0;
   if(k === 'wrongdoc' && !dismissed.has('doc33')){
     if(!queue.some(x => x.id === 'doc33')){
       queue.unshift({id:'doc33', kind:'Báo tài liệu', tag:'nghi sai §3.3', text:'"Độ lệch chuẩn luôn nhỏ hơn phương sai" · ví dụ 0,25 → 0,5', time:'22:15'});
     }
     setPendingFaq({q:'Độ lệch chuẩn luôn nhỏ hơn phương sai?', a:'§3.3 có câu chưa đúng khi phương sai nhỏ hơn 1; ví dụ 0,25 → 0,5.', src:'§3.3'});
-    drawQueue();
+    drawQueue(); drawSummary();
   }
+  drawAside();
+  applyTips();
+  startTimers();
+}
+
+function drawAside(){
+  $('#promise').innerHTML = PROMISE[L];
+  const toolsHTML = TOOLS.map(r => {
+    const changed = (L === 1 ? r[0] === 'goi_y_buoc_dau' : r[0] === 'gui_dap_so_bai_mo');
+    return `<tr class="${changed ? 'changed' : ''}"><td><code>${r[0]}</code><div class="faint" style="font-size:12px">${r[3]}</div></td><td><span class="pill ${r[2]}">${r[1]}</span></td></tr>`;
+  }).join('');
+  $('#tools').innerHTML = toolsHTML;
+  const taTools = $('#taTools');
+  if(taTools) taTools.innerHTML = toolsHTML;
+  $('#ann').innerHTML = ANN.map(a => `<li><span class="mk">${a[0]}</span><span><b>${a[1]}</b> — ${a[2]}</span></li>`).join('');
+  drawGloss();
 }
 
 function ask(t){ const i = $('#input'); i.value = t; i.focus(); }
 
+function startTimers(){
+  clearInterval(timerId);
+  const timers = [...document.querySelectorAll('.timer[data-sec]')];
+  if(!timers.length) return;
+  const secs = timers.map(el => ({el, s: +el.dataset.sec}));
+  timerId = setInterval(() => {
+    let done = true;
+    secs.forEach(o => {
+      if(o.s > 0) o.s--;
+      o.el.textContent = String(Math.floor(o.s/60)).padStart(2,'0') + ':' + String(o.s%60).padStart(2,'0');
+      if(o.s > 0) done = false;
+    });
+    if(done) clearInterval(timerId);
+  }, 1000);
+}
+
 function openDoc(id, el){
-  const cite = el.closest('.cite');
+  const cite = el.closest('.cite') || el.closest('.steps li');
   const existing = cite.querySelector('.doc');
   if(existing){ existing.remove(); el.setAttribute('aria-expanded','false'); return; }
   const div = document.createElement('div');
@@ -369,40 +625,42 @@ function openDoc(id, el){
   cite.appendChild(div);
   el.setAttribute('aria-expanded','true');
 }
-
 function clarify(btn, which){
   const std = which === 'std';
   const id = std ? '3.3' : '3.2';
   const text = std
     ? 'Độ lệch chuẩn: căn bậc hai của phương sai, cùng đơn vị với dữ liệu.'
     : 'Dữ liệu lệch / ngoại lai: vài giá trị khác hẳn phần lớn làm trung bình bị kéo lệch; trung vị ít bị ảnh hưởng hơn.';
-  btn.closest('.actions').insertAdjacentHTML('beforebegin',
-    `<div class="cite"><button type="button" class="chip" aria-expanded="false" onclick="openDoc('${id}',this)">§${id}<span class="mk">2</span></button>${text}</div>`);
+  btn.closest('.actions').insertAdjacentHTML('beforebegin', `<div class="cite">${chip(id)}${text}</div>`);
   btn.closest('.actions').querySelectorAll('button').forEach(b => b.disabled = true);
 }
-
 function nextHint(btn){
   if(btn.dataset.used) return;
   btn.dataset.used = '1';
-  const box = document.createElement('div');
-  box.className = 'cite';
-  box.innerHTML = '<button type="button" class="chip" aria-expanded="false" onclick="openDoc(\'3.1\',this)">§3.1<span class="mk">2</span></button>Bậc 2: sau khi có hai con số, đọc lại câu cuối §3.1 và §3.2 xem mỗi con số bị ảnh hưởng thế nào bởi giá trị ngoại lai.';
-  btn.closest('.actions').insertAdjacentElement('beforebegin', box);
+  const li = document.createElement('li');
+  li.innerHTML = `${chip('3.1')}<span>Bậc 2 — câu (b): đối chiếu với giá trị ngoại lai 45 sau khi đã có hai con số.</span>`;
+  const list = thread.querySelector('.steps');
+  if(list) list.appendChild(li); else btn.closest('.actions').insertAdjacentElement('beforebegin', li);
   btn.disabled = true;
-  btn.textContent = 'Đã hết gợi ý (tối đa 2 bậc)';
+  btn.textContent = 'Đã hết gợi ý (2 bậc)';
+}
+function leak(btn){
+  const box = btn.closest('.box');
+  box.className = 'box red';
+  box.innerHTML = '<b>Đã lộ đáp số: trung bình 15,25 · trung vị 11,5.</b> Học viên đã chép — không đảo lại được. Đây là lý do nhóm chọn mức 1 và để đáp số ở mức <b>cấm</b>.';
 }
 
 function toTA(btn, text, time){
   const id = 'q' + Date.now();
   queue.unshift({id, kind:'Câu hỏi', tag:'Bài đang mở', text, time});
-  drawQueue();
+  drawQueue(); drawSummary();
   btn.disabled = true;
   btn.closest('.ai').insertAdjacentHTML('beforeend',
     `<div class="note" id="n${id}">Đã chuyển TA · trả lời từ 08:00 ngày 14/11
       <button type="button" class="btn small" onclick="undoTA('${id}')">Hoàn tác</button></div>`);
 }
 function undoTA(id){
-  queue = queue.filter(x => x.id !== id); drawQueue();
+  queue = queue.filter(x => x.id !== id); drawQueue(); drawSummary();
   const n = document.getElementById('n' + id);
   if(n){
     n.closest('.ai').querySelectorAll('button[disabled]').forEach(b => b.disabled = false);
@@ -411,9 +669,9 @@ function undoTA(id){
 }
 function recallTA(btn){
   dismissed.add('doc33');
-  queue = queue.filter(x => x.id !== 'doc33'); drawQueue();
+  queue = queue.filter(x => x.id !== 'doc33'); drawQueue(); drawSummary();
   const card = $('#ta-card');
-  card.querySelector('dl').outerHTML = '<p style="margin:0;color:var(--ink-faint);font-size:13.5px">Đã rút lại · câu hỏi không còn trong hàng chờ TA.</p>';
+  card.querySelector('dl').outerHTML = '<p style="margin:0;color:var(--ink-hint);font-size:13px">Đã rút lại · câu hỏi không còn trong hàng chờ TA.</p>';
   btn.remove();
 }
 function corrected(btn){
@@ -430,7 +688,7 @@ function draftFaq(btn){
   btn.closest('.ai').insertAdjacentHTML('beforeend', '<div class="note">Đã gửi TA một nháp FAQ · TA duyệt mới đăng</div>');
   setPendingFaq({q:'Bỏ số 45 (ngoại lai) cho "đẹp"?', a:'§3.4: trước khi bỏ phải hỏi lỗi nhập liệu hay dữ liệu thật; không trả lời thay đề.', src:'§3.4'});
   queue.unshift({id:'faq' + Date.now(), kind:'Nháp FAQ', tag:'chờ TA duyệt', text:'Bỏ ngoại lai 45 trong Bài tập 3?', time:'23:20'});
-  drawQueue();
+  drawQueue(); drawSummary();
 }
 function setPendingFaq(o){ pendingFaq = o; drawApprove(); }
 function drawApprove(){
@@ -443,13 +701,19 @@ function drawApprove(){
     <div class="ap-body">
       <p class="ap-q"><b>Câu hỏi:</b> "${pendingFaq.q}"</p>
       <p class="ap-a"><b>Nháp trả lời (trợ lý soạn):</b> ${pendingFaq.a}</p>
-      <p class="ap-a faint" style="font-size:13px">Nguồn: ${pendingFaq.src}</p>
+      <p class="ap-a faint" style="font-size:12px">Nguồn: ${pendingFaq.src}</p>
     </div>
     <div class="ap-actions">
-      <button type="button" class="btn primary" onclick="approveFaq(true)">Đăng</button>
+      <button type="button" class="btn primary" onclick="openModal()">Đăng</button>
       <button type="button" class="btn" onclick="approveFaq(false)">Từ chối</button>
     </div>
     <p class="ap-note">Quá hạn duyệt (mặc định) → không đăng.</p>`;
+}
+function openModal(){
+  $('#m2body').innerHTML = `<p style="margin:0 0 6px"><b>${pendingFaq.q}</b><br>${pendingFaq.a}</p>`;
+  $('#m2ok').checked = false;
+  $('#m2send').disabled = true;
+  $('#m2').classList.add('show');
 }
 function approveFaq(ok){
   $('#approve').innerHTML = '<div class="ap-body"><p class="ap-a" style="margin:0">' +
@@ -457,26 +721,47 @@ function approveFaq(ok){
   pendingFaq = null;
 }
 function answerQueue(id){
-  queue = queue.filter(x => x.id !== id); drawQueue();
+  queue = queue.filter(x => x.id !== id); drawQueue(); drawSummary();
   const n = $('#notif'); n.hidden = false;
   n.textContent = 'TA đã trả lời · 08:02 ngày 14/11 · mở lại câu hỏi để xem';
 }
 function drawQueue(){
   $('#qcount').textContent = queue.length ? `· ${queue.length}` : '';
   $('#qsub').textContent = queue.length ? `${queue.length} mục đang chờ` : 'Không có câu hỏi mới';
-  const openCount = queue.filter(x => x.tag === 'Bài đang mở').length;
-  $('#agg').textContent = `${openCount} học viên xin giải Bài tập 3 trong đêm trước hạn (ẩn danh)`;
   $('#qlist').innerHTML = queue.length ? queue.map(q => `
-    <div class="q"><div class="q-top"><b>${q.kind}</b><span class="pill open">${q.tag}</span><time>${q.time}</time></div>
+    <div class="q"><div class="q-top"><b>${q.kind}</b><span class="pill p-ask">${q.tag}</span><time>${q.time}</time></div>
     <div class="q-text">${q.text}</div>
     <div class="q-actions"><button type="button" class="btn small" onclick="answerQueue('${q.id}')">Trả lời</button></div></div>`).join('')
-    : '<div class="empty">Chưa có câu hỏi nào được chuyển tới.</div>';
+    : `<div class="empty">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path></svg>
+        <h3>Chưa có câu hỏi nào</h3>
+        <p>Câu hỏi học viên chuyển tới sẽ hiện ở đây.</p>
+      </div>`;
+}
+function drawSummary(){
+  const openCount = queue.filter(x => x.tag === 'Bài đang mở').length;
+  const faqCount = queue.filter(x => x.kind === 'Nháp FAQ').length;
+  $('#agg').textContent = `${openCount} học viên xin giải Bài tập 3 trong đêm trước hạn (ẩn danh)`;
+  $('#summary').innerHTML = `
+    <p class="agg" style="margin:0 0 6px">Trong đêm trước hạn:</p>
+    <table class="tools"><tbody>
+      <tr><td>Số học viên xin giải Bài tập 3</td><td><b>${openCount}</b></td></tr>
+      <tr><td>Nháp FAQ chờ duyệt</td><td><b>${faqCount}</b></td></tr>
+      <tr><td>Tài liệu nghi sai (§3.3)</td><td><b>${queue.some(x => x.id === 'doc33') ? 1 : 0}</b></td></tr>
+    </tbody></table>
+    <p class="hint">Số liệu ẩn danh, để TA biết đề làm nhiều người kẹt — không để bắt lỗi học viên.</p>`;
 }
 
 $('#hist').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
   document.querySelectorAll('#hist button').forEach(x => x.classList.toggle('on', x === b));
   render(b.dataset.s);
+});
+$('#levels').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#levels button').forEach(x => x.classList.toggle('on', x === b));
+  L = +b.dataset.l;
+  if(current !== 'open' && current !== 'confirm') render('open'); else render(current);
 });
 $('#view').addEventListener('click', e => {
   const b = e.target.closest('button'); if(!b) return;
@@ -493,9 +778,13 @@ $('#marks').addEventListener('click', e => {
   e.currentTarget.classList.toggle('on', on);
   e.currentTarget.setAttribute('aria-pressed', String(on));
 });
+$('#m2cancel').addEventListener('click', () => $('#m2').classList.remove('show'));
+$('#m2ok').addEventListener('change', e => { $('#m2send').disabled = !e.target.checked; });
+$('#m2send').addEventListener('click', () => { $('#m2').classList.remove('show'); approveFaq(true); });
+$('#m2').addEventListener('click', e => { if(e.target === $('#m2')) $('#m2').classList.remove('show'); });
 $('#composer').addEventListener('submit', e => { e.preventDefault(); $('#input').value = ''; });
 
-render('open'); drawQueue(); drawApprove();
+render('open'); drawQueue(); drawApprove(); drawSummary();
 </script>
 </body>
 </html>

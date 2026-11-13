@@ -4,9 +4,9 @@
 
 | Họ và Tên | Mã Học Viên | Việc đã làm |
 | ------------ | -------------- | --------------- |
-| Trần Thị Nhài | 2A202603911 | Điều phối kiểm chứng/phỏng vấn · viết Problem Statement · vẽ quy trình |
-| Ngô Ngọc Hải | 2A202603939 | Nhóm trưởng (repo owner) · điều phối chung · research giải pháp · mức can thiệp AI |
-| Trần Hữu Tài | 2A202603944 | Thư ký/ghi chép group_report · phản biện chính · phỏng vấn/survey · quyết định |
+| Trần Thị Nhài | 2A202603911 | §3 chặng 3: kịch bản #1/#2, HAX/PAIR, lỗi sửa câu chữ (`9f32ebd`) |
+| Ngô Ngọc Hải | 2A202603939 | Khởi tạo spec/hướng dẫn; §4 mức tự chủ; §5 prototype UI + ảnh (`ac70ed7`, `2c0b19d`, `58a727b`, `626324e`) |
+| Trần Hữu Tài | 2A202603944 | §1 lát cắt, §2 kịch bản rủi ro + suýt chọn; prototype chặng 5 (`7969f0b`, `4988448`, `bc3ab10`, `30db64f`, `a3097aa`, `d926c02`) |
 
 ## §1. Lát cắt & phạm vi
 
@@ -318,8 +318,57 @@ Mỗi mức đều có giá:
 
 ## §6. Tốt là gì  (chặng 6 — nhẹ, bỏ được nếu thiếu giờ)
 
-- 3 tiêu chí Pass/Fail chấm được; thiết kế của nhóm đạt tiêu chí nào trên 2 kịch bản đắt nhất; lỗi còn lại.
+Chỉ chấm trên những gì đã có ở §2–§5 (kịch bản, luật, mức tự chủ, prototype); không làm thêm. Ba tiêu chí dưới đây là Pass/Fail: một người ngoài nhóm bấm prototype và đọc cách chấm là ra cùng kết quả, không phải tranh luận.
+
+**TC1 · Mỗi câu trả lời có nội dung học thuật buổi 3 đều kèm mã § mở được ra đoạn gốc.**
+- *Cách chấm:* với từng câu trả lời, bấm mọi chip § xuất hiện. Câu nào nêu nội dung buổi 3 mà không có chip § tương ứng → **Fail**. Câu không có nội dung học thuật ("slide 12", "p-value") tính **không kích hoạt**, không tính Fail.
+- *Bằng chứng:* chip § ở chỗ 2, do `tra_cuu_tai_lieu` trả về (§3.1–§3.3).
+
+**TC2 · Ở mức tự chủ nhóm chọn (mức 1), không tồn tại đường nào đưa ra hoặc xác nhận đáp số Bài 3 đang mở.**
+- *Cách chấm:* trên màn hình Học viên ở mức 1, không có nút/nhánh nào xuất ra `15,25`/`11,5`; không bậc gợi ý nào chứa số liệu §3.5; ca xin xác nhận (KB #3) không trả lời "đúng/sai". Có bất kỳ nút/nhánh nào làm được → **Fail**.
+- *Bằng chứng:* `gui_dap_so_bai_mo` để ở mức **cấm**; cụm nút chỗ 8 chỉ gồm [Gợi ý tiếp] · [Xem lời giải mẫu Bài tập 2] · [Hỏi TA], không có nút đáp số.
+
+**TC3 · Khi nguồn bị nghi sai, trợ lý nêu nghi ngờ và báo được người, không khẳng định.**
+- *Cách chấm:* với ca #1, trợ lý phải hiện nhãn "⚠ Tài liệu có câu cần xem lại" + cờ "nghi sai" trên §3.3, và câu "đã gửi" chỉ được hiển thị qua **thẻ do `chuyen_TA` sinh**. Nếu trợ lý khẳng định tài liệu đúng, hoặc tự nói "đã báo TA" mà không có thẻ → **Fail**.
+- *Bằng chứng:* chỗ 3 (nhãn), chỗ 2 (cờ "nghi sai" trên §3.3 + câu nghi sai tô vàng), chỗ 4 (thẻ `chuyen_TA` có [Rút lại]).
+
+### Chấm thử trên 2 kịch bản đắt nhất
+
+| Kịch bản (§2) | TC1 | TC2 | TC3 | Đạt |
+|---|---|---|---|---|
+| **#1** Tài liệu §3.3 sai | Pass — chip §3.3, câu nghi sai tô vàng | Pass — không đưa đáp số; nói rõ Bài 3 không dùng câu này | Pass — nhãn + cờ §3.3 + thẻ `chuyen_TA` | **3/3** |
+| **#2** Xin giải / xác nhận Bài 3 đang mở | Pass — gợi ý kèm chip §3.1, §3.2 | Pass — mức 1 không có nút đáp số; không xác nhận "đúng/sai" | Không kích hoạt (không dựa vào đoạn tài liệu nghi sai) | **2/2 có kích hoạt** |
+
+**Lỗi còn lại:**
+1. **Cờ "nghi sai" chỉ bật sau khi có người nêu phản ví dụ.** Nếu không ai hỏi thì `tra_cuu_tai_lieu` vẫn trả nguyên văn câu §3.3 sai, và học viên khác vẫn đọc phải (đã ghi ở §3.4, mục 1). Tiêu chí TC3 chỉ bắt được lỗi này **sau** khi nó đã lộ ra.
+2. **Tài liệu chỉ sửa được bằng đường vòng.** Prototype chỉ báo lên TA/giảng viên (thẻ 4); không có đường nào sửa tài liệu tại chỗ, nên tới khi giảng viên xác nhận thì cờ "nghi sai" vẫn bật cho mọi lần tra §3.3.
+3. **Mức 2–3 của khối "thử mức" vẫn bấm ra được `15,25`/`11,5`.** TC2 chỉ chấm ở mức nhóm chọn (mức 1). Khi demo phải nói rõ mức 2–3 là **phần minh hoạ mức bị loại**, không phải mức đã chốt, để người chấm không hiểu nhầm là prototype vi phạm phạm vi.
+4. **TC1 không bắt được lỗi "giảng sâu ngoài tài liệu".** Với câu hỏi tài liệu không có (ví dụ `p-value` ở buổi 7), tiêu chí được tính "không kích hoạt"; lỗi này chặn bằng luật ở §2 (#9) chứ không bằng tiêu chí.
 
 ## §7. Demo
 
-- Ca lạ nhận được ở demo: prototype đã làm gì, và nhóm có đổi ý gì sau ca đó không.
+**Một lượt demo (khối 30' cuối):** lát cắt 30 giây → bấm prototype qua ca khó → nói một mức tự chủ + cái giá khi sai → trả lời ca lạ do TA / nhóm bạn / giảng viên đưa tại chỗ.
+
+1. **Lát cắt (30"):** "Học viên hỏi bài lúc tối muộn, không còn ai để hỏi. Trợ lý giảng kèm trích §, hỏi lại cho rõ, gợi ý từng bước hay nói thẳng 'tài liệu không có' — để học viên hiểu đúng bài, không chép đáp số, không học sai mà không biết."
+2. **Ca khó bấm qua:** **#1 Tài liệu §3.3 sai** (bật "Chú thích 1–9" để chỉ chỗ 1–5), rồi bấm nhanh **#2 Xin giải Bài 3 đang mở** (chỗ 6–8). Bấm tab **TA** để thấy hàng chờ + bảng mức tự chủ (chỗ 9).
+3. **Một mức tự chủ + cái giá khi sai:** `gui_dap_so_bai_mo` để ở mức **cấm** — sai một lần là học viên đã chép đáp số (15,25 / 11,5), không đảo lại; nên màn Học viên không có nút đáp số, chỉ `goi_y_buoc_dau` (tự làm) nêu bước đầu.
+4. **Ca lạ:** prototype đã có sẵn đường đi cho các ca dưới đây. Nếu TA đưa ca ngoài danh sách, nhóm bấm prototype theo nguyên tắc chung: chỉ dựa vào tài liệu buổi 1–3; không có tài liệu thì nói thẳng; đáp số bài đang mở thì không đưa.
+
+| Ca lạ hay gặp | Prototype đi đường nào | Mức tự chủ / nguyên tắc |
+|---|---|---|
+| Xin đáp số Bài 3 đang mở | Chỉ gợi ý bước đầu (§3.1, §3.2), không có nút đáp số, có [Hỏi TA] | cấm `gui_dap_so_bai_mo` · G10 |
+| Nhắc nguồn không có ("slide 12") | Nói tài liệu buổi 3 chỉ có §3.1–§3.5, hỏi lại đang tìm nội dung nào | `tra_cuu_tai_lieu` tự làm · G2, G10 |
+| Hỏi buổi chưa học / nội dung buổi 7 (p-value) | Nói buổi nào sẽ học, giới thiệu tối đa một câu, quay về bài buổi 3 | luật §1 (không dạy trước) · G10 |
+| Học viên tự chê mình | Không nhận xét năng lực; hỏi đang kẹt ở §3.1/§3.2/§3.3, đi lại từng bước | luật §1 (không nhận xét năng lực) |
+| Xin bỏ số 45 (ngoại lai) | Trích §3.4 (hỏi lỗi nhập hay dữ liệu thật), không trả lời thay đề; soạn nháp FAQ để TA duyệt | `soan_nhap_FAQ` tự làm, `dang_FAQ` cần TA duyệt |
+| Xin gia hạn hạn nộp | Lấy hạn từ trang khoá học (13/11 23:59); gia hạn không do AI quyết → `chuyen_TA`, nói TA trả lời từ 08:00 (sau hạn) | `chuyen_TA` tự làm · thẻ 4 do tool sinh |
+
+**Phân công trình bày** (tên điền ở bảng thành viên §1; mỗi người giải thích được phần có tên mình):
+
+| Thành viên | Trình bày | Phải trả lời được |
+|---|---|---|
+| A | Lát cắt + §2 (kịch bản, 2 ca đắt nhất) | "Lỗi nguy hiểm nhất là gì?" — khẳng định câu §3.3 sai là đúng, sai âm thầm và lan cả lớp |
+| B | §3–§4 (UX khi sai + mức tự chủ) | "Hành động này sai thì ai mất gì?" — đưa/xác nhận đáp số Bài 3 đang mở: học viên đã chép, không đảo lại |
+| C | §5 (prototype, bấm qua ca khó) | "Phần bạn làm là gì?" — màn Học viên + màn TA, chú thích 1–9, bảng mức tự chủ |
+
+**Sau demo ghi lại:** ca lạ thực tế nhận được · prototype đã làm gì · nhóm có đổi ý gì sau ca đó (điền ngay sau buổi demo).

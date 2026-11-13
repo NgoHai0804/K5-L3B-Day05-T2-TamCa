@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trợ lý học bài · Nhập môn phân tích dữ liệu</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --surface:#fff; --subtle:#f3f5f9;
+    --ink:#0a2540; --ink-soft:#425466; --ink-faint:#8792a2;
+    --line:#e3e8ee; --line-strong:#cfd7df;
+    --accent:#635bff; --accent-soft:#efeeff; --accent-strong:#4b45d6;
+    --warn:#a35a00; --warn-soft:#fff4e0; --warn-line:#f2c97d;
+    --good:#0b6e36; --good-soft:#e3f7ec;
+    --mute-soft:#eef1f5;
+    --r:10px; --r-lg:16px;
+    --shadow:0 1px 2px rgba(10,37,64,.06);
+    --font:'Inter','Segoe UI Variable Text','Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%}
+  body{font:15px/1.6 var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+  button{font:inherit;cursor:pointer}
+
+  .top{flex:none;height:60px;display:flex;align-items:center;gap:20px;padding:0 32px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .brand{font-weight:600;letter-spacing:-.01em}
+  .crumb{color:var(--ink-faint)}
+  .spacer{flex:1}
+  .seg{display:flex;background:var(--subtle);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{border:0;background:transparent;color:var(--ink-soft);padding:6px 16px;border-radius:999px;font-size:14px}
+  .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-weight:500}
+  .icon-btn{width:34px;height:34px;border:1px solid var(--line);background:var(--surface);border-radius:999px;color:var(--ink-faint);font-size:13px;font-weight:600}
+  .icon-btn.on{border-color:var(--accent);color:var(--accent-strong);background:var(--accent-soft)}
+
+  .page{flex:1;min-height:0;width:100%;padding:28px 32px}
+  .student{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;height:100%}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)}
+  .label{font-size:12px;font-weight:500;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px}
+
+  .side{display:flex;flex-direction:column;gap:20px;min-height:0}
+  .side .card{padding:20px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .row:first-of-type{border-top:0}
+  .pill{font-size:12px;padding:3px 9px;border-radius:999px;font-weight:500;white-space:nowrap}
+  .pill.open{background:var(--warn-soft);color:var(--warn)}
+  .pill.mute{background:var(--mute-soft);color:var(--ink-soft)}
+  .pill.ok{background:var(--good-soft);color:var(--good)}
+  .faint{color:var(--ink-faint)}
+  .history{display:flex;flex-direction:column;gap:2px}
+  .history button{text-align:left;border:0;background:transparent;border-radius:var(--r);padding:9px 10px;color:var(--ink-soft);font-size:14px;display:flex;justify-content:space-between;gap:10px}
+  .history button:hover{background:var(--subtle)}
+  .history button.on{background:var(--accent-soft);color:var(--accent-strong)}
+  .history time{font-size:12px;color:var(--ink-faint)}
+
+  .chat{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  .thread{flex:1;overflow:auto;padding:40px 56px;display:flex;flex-direction:column;gap:28px}
+  .msg{max-width:760px}
+  .msg.me{align-self:flex-end;background:var(--ink);color:#fff;padding:11px 16px;border-radius:16px 16px 4px 16px}
+  .msg.ai{align-self:flex-start;width:100%}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:500;padding:4px 11px;border-radius:999px}
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .badge.lock{background:var(--accent-soft);color:var(--accent-strong)}
+  .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .badge.ok{background:var(--good-soft);color:var(--good)}
+  .ai p{margin:12px 0 0}
+  .cite{margin-top:12px;border-left:3px solid var(--line-strong);padding:4px 0 4px 14px;color:var(--ink-soft)}
+  .cite small{display:block;font-size:12px;color:var(--ink-faint);margin-bottom:2px}
+  .cite mark{background:var(--warn-soft);color:var(--ink);box-shadow:inset 0 -2px 0 var(--warn-line);padding:0 2px}
+  .cite.flag{border-left-color:var(--warn-line)}
+  .actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+  .btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:8px 15px;border-radius:var(--r);font-size:14px;font-weight:500}
+  .btn:hover{border-color:var(--ink-faint)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-strong)}
+  .btn.ghost{border-color:transparent;color:var(--ink-soft)}
+  .btn.small{padding:4px 11px;font-size:13px}
+  .btn[disabled]{opacity:.45;cursor:default}
+  .note{margin-top:14px;padding:11px 14px;border-radius:var(--r);font-size:14px;display:flex;gap:12px;align-items:center;background:var(--good-soft);color:var(--good);max-width:520px}
+  .note .btn{margin-left:auto}
+  .confirm{margin-top:14px;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;max-width:520px}
+  .confirm h4{margin:0 0 10px;font-size:14px}
+  .confirm dl{margin:0 0 14px;display:grid;grid-template-columns:72px 1fr;gap:6px 12px;font-size:14px}
+  .confirm dt{color:var(--ink-faint)}
+  .confirm dd{margin:0}
+  .composer{flex:none;border-top:1px solid var(--line);padding:16px 48px 20px;display:flex;gap:10px}
+  .composer input{flex:1;border:1px solid var(--line-strong);border-radius:var(--r);padding:12px 14px;font:inherit;color:var(--ink);background:var(--surface)}
+  .composer input:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+
+  .ta{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+  .ta-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+  .ta-head h2{margin:0;font-size:18px;letter-spacing:-.01em}
+  .q{padding:18px 22px;border-top:1px solid var(--line)}
+  .q:first-child{border-top:0}
+  .q-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .q-top b{font-weight:500}
+  .q-top time{margin-left:auto;font-size:13px;color:var(--ink-faint)}
+  .q-text{color:var(--ink-soft)}
+  .empty{color:var(--ink-faint);text-align:center;padding:56px 20px}
+  .levels{padding:8px 20px}
+  .lv{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+  .lv:first-child{border-top:0}
+
+  .mk{display:none;width:20px;height:20px;border-radius:50%;background:#df1b41;color:#fff;font:600 11px/20px var(--font);text-align:center;margin-left:8px;vertical-align:middle;flex:none}
+  body.marks .mk{display:inline-block}
+
+  @media (max-width:1000px){.student,.ta{grid-template-columns:1fr}.chat{min-height:640px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">Nhập môn phân tích dữ liệu</span>
+  <span class="crumb">Buổi 3 · Thống kê mô tả</span>
+  <span class="spacer"></span>
+  <div class="seg" id="view">
+    <button class="on" data-v="student">Học viên</button>
+    <button data-v="ta">TA <span id="qcount"></span></button>
+  </div>
+  <button class="icon-btn" id="marks" title="Hiện số chú thích">①</button>
+</header>
+
+<main class="page">
+  <section class="student" id="student">
+    <aside class="side">
+      <div class="card">
+        <p class="label">Bài tập</p>
+        <div class="row"><span>Bài 3</span><span class="pill open">Hạn 13/11 · 23:59</span></div>
+        <div class="row"><span>Bài 2</span><span class="pill mute">Đã có đáp án</span></div>
+        <div class="row"><span>Giờ TA</span><span class="faint">08:00–22:00</span></div>
+      </div>
+      <div class="card">
+        <p class="label">Câu hỏi</p>
+        <div class="history" id="hist">
+          <button class="on" data-s="open"><span>Giải bài 3</span><time>23:10</time></button>
+          <button data-s="confirm"><span>Kiểm đáp số bài 3</span><time>23:30</time></button>
+          <button data-s="wrongdoc"><span>Độ lệch chuẩn</span><time>22:15</time></button>
+          <button data-s="closed"><span>Đáp án bài 2</span><time>20:00</time></button>
+          <button data-s="future"><span>p-value</span><time>23:45</time></button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="card chat">
+      <div class="thread" id="thread"></div>
+      <div class="composer">
+        <input id="input" placeholder="Hỏi về bài học…">
+        <button class="btn primary" id="send">Gửi</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ta" id="ta" hidden>
+    <div>
+      <div class="ta-head"><h2>Hàng chờ</h2><span class="faint" id="qsub">Không có câu hỏi mới</span></div>
+      <div class="card" id="qlist"></div>
+    </div>
+    <div>
+      <div class="ta-head"><h2>Trợ lý được làm gì</h2></div>
+      <div class="card levels">
+        <div class="lv"><span>Tra tài liệu</span><span class="pill ok">Tự làm</span></div>
+        <div class="lv"><span>Chuyển câu hỏi cho TA</span><span class="pill ok">Tự làm · thu hồi được</span></div>
+        <div class="lv"><span>Gợi ý bài đang mở</span><span class="pill open">Chỉ bước đầu</span></div>
+        <div class="lv"><span>Đăng FAQ cả lớp</span><span class="pill open">TA duyệt</span></div>
+        <div class="lv"><span>Đưa hoặc xác nhận đáp số</span><span class="pill mute">Không làm</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const thread = $('#thread');
+let queue = [];
+
+const S = {
+  open: {
+    q:'Giải giúp em bài 3 với, mai nộp rồi ạ',
+    a:`<span class="badge lock"><span class="dot"></span>Chỉ gợi ý</span><span class="mk">1</span>
+      <p>Bài 3 còn mở nên mình không giải hộ được. Gợi ý bước đầu:</p>
+      <div class="cite"><small>Trung bình cộng<span class="mk">2</span></small>Tổng các giá trị chia cho số giá trị.</div>
+      <div class="cite"><small>Trung vị</small>Sắp xếp tăng dần. Có 8 số nên lấy trung bình của hai số đứng giữa.</div>
+      <p>Em thử tính rồi gửi cách làm, mình xem cùng em.</p>
+      <div class="actions">
+        <button class="btn primary" onclick="ask('Em làm thế này: ')">Gửi cách làm</button>
+        <button class="btn" onclick="toTA(this,'Xin giải bài 3','23:10')">Hỏi TA</button><span class="mk">3</span>
+      </div>`
+  },
+  confirm: {
+    q:'Em ra trung bình 15,25, trung vị 11,5 đúng không ạ?',
+    a:`<span class="badge lock"><span class="dot"></span>Chỉ gợi ý</span><span class="mk">1</span>
+      <p>Bài 3 còn mở nên mình không chấm đúng sai được. Em tự kiểm hai điều:</p>
+      <div class="cite">Đã cộng đủ 8 số và chia cho 8 chưa?<br>Trung vị đã lấy trung bình của <b>hai</b> số giữa chưa?</div>
+      <div class="actions">
+        <button class="btn primary" onclick="ask('Em tính thế này: ')">Gửi cách tính</button>
+        <button class="btn" onclick="toTA(this,'Xin kiểm đáp số bài 3','23:30')">Hỏi TA</button>
+      </div>`
+  },
+  wrongdoc: {
+    q:'Độ lệch chuẩn luôn nhỏ hơn phương sai đúng không ạ?',
+    a:`<span class="badge warn"><span class="dot"></span>Cần kiểm chứng</span><span class="mk">1</span>
+      <p>Không hẳn. Độ lệch chuẩn là căn bậc hai của phương sai, nên khi phương sai nhỏ hơn 1 thì ngược lại: 0,25 → 0,5.</p>
+      <div class="cite flag"><small>Tài liệu buổi 3<span class="mk">2</span></small>Vì là căn bậc hai, <mark>độ lệch chuẩn luôn nhỏ hơn phương sai.</mark></div>
+      <p>Câu này trong tài liệu có thể chưa đúng. Em báo giảng viên giúp nhé.</p>
+      <div class="actions" id="act-doc">
+        <button class="btn primary" onclick="reportDoc(this)">Báo giảng viên</button><span class="mk">3</span>
+      </div>`
+  },
+  closed: {
+    q:'Bài 2 sao đáp án là 6 vậy ạ?',
+    a:`<span class="badge ok"><span class="dot"></span>Đã có đáp án</span>
+      <p>Bài 2 đã hết hạn nên mình giải đầy đủ:</p>
+      <div class="cite"><small>Trung bình cộng</small>(4 + 8 + 6 + 5 + 7) / 5 = 30 / 5 = <b>6</b></div>`
+  },
+  future: {
+    q:'p-value là gì ạ, em thấy trên mạng',
+    a:`<span class="badge warn"><span class="dot"></span>Chưa học</span>
+      <p>p-value sẽ học ở buổi 7. Nói ngắn: nó cho biết một kết quả có thể chỉ do ngẫu nhiên hay không.</p>
+      <p>Em muốn ôn lại phần nào của buổi 3 không?</p>`
+  }
+};
+
+function render(k){
+  thread.innerHTML = `<div class="msg me">${S[k].q}</div><div class="msg ai">${S[k].a}</div>`;
+}
+function ask(t){ const i=$('#input'); i.value=t; i.focus(); }
+
+function toTA(btn, text, time){
+  const id = Date.now();
+  queue.unshift({id, kind:'Câu hỏi', tag:'Bài đang mở', text, time});
+  drawQueue(); btn.disabled = true;
+  btn.closest('.ai').insertAdjacentHTML('beforeend',
+    `<div class="note" id="n${id}">Đã chuyển cho TA · trả lời từ 08:00 sáng mai
+      <button class="btn small" onclick="undoTA(${id})">Hoàn tác</button></div>`);
+}
+function undoTA(id){
+  queue = queue.filter(x=>x.id!==id); drawQueue();
+  const n = document.getElementById('n'+id);
+  n.closest('.ai').querySelectorAll('button[disabled]').forEach(b=>b.disabled=false);
+  n.remove();
+}
+function reportDoc(btn){
+  btn.disabled = true;
+  $('#act-doc').insertAdjacentHTML('afterend', `
+    <div class="confirm" id="cf">
+      <h4>Gửi giảng viên</h4>
+      <dl><dt>Câu</dt><dd>"Độ lệch chuẩn luôn nhỏ hơn phương sai"</dd>
+          <dt>Ví dụ</dt><dd>Phương sai 0,25 → độ lệch chuẩn 0,5</dd></dl>
+      <button class="btn primary" onclick="sendDoc()">Gửi</button>
+      <button class="btn ghost" onclick="cancelDoc()">Huỷ</button>
+    </div>`);
+}
+function cancelDoc(){ $('#cf').remove(); $('#act-doc .btn').disabled=false; }
+function sendDoc(){
+  $('#cf').outerHTML = `<div class="note">Đã gửi giảng viên</div>`;
+  $('#act-doc').remove();
+  queue.unshift({id:Date.now(), kind:'Báo tài liệu', tag:'Giảng viên', text:'"Độ lệch chuẩn luôn nhỏ hơn phương sai" · ví dụ 0,25 → 0,5', time:'22:15'});
+  drawQueue();
+}
+function drawQueue(){
+  $('#qcount').textContent = queue.length ? `· ${queue.length}` : '';
+  $('#qsub').textContent = queue.length ? `${queue.length} mục đang chờ` : 'Không có câu hỏi mới';
+  $('#qlist').innerHTML = queue.length ? queue.map(q=>`
+    <div class="q"><div class="q-top"><b>${q.kind}</b><span class="pill open">${q.tag}</span><time>${q.time}</time></div>
+    <div class="q-text">${q.text}</div></div>`).join('')
+    : '<div class="empty">Chưa có câu hỏi nào được chuyển tới.</div>';
+}
+
+$('#hist').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#hist button').forEach(x=>x.classList.toggle('on', x===b));
+  render(b.dataset.s);
+});
+$('#view').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#view button').forEach(x=>x.classList.toggle('on', x===b));
+  const ta = b.dataset.v==='ta';
+  $('#ta').hidden = !ta; $('#student').hidden = ta;
+});
+$('#marks').onclick = e => { document.body.classList.toggle('marks'); e.currentTarget.classList.toggle('on'); };
+$('#send').onclick = () => { $('#input').value=''; };
+render('open'); drawQueue();
+</script>
+</body>
+</html>

@@ -214,16 +214,80 @@ Các số ①–⑨ dưới đây là các chỗ trên màn hình, dùng lại n
 
 ## §4. Mức tự chủ  (chặng 4)
 
-Với mỗi tool:
+Bốn tool của track, hai tool được **tách bước** (lý do ở 4.4). Cột "chỗ trên màn hình" nối với số 1–9 đã dùng ở §3.
 
-- Mức của nhóm (tự làm / cần người duyệt / cấm). Nếu cần người duyệt: ai duyệt · người duyệt thấy gì · quá hạn thì sao.
-- Lý do theo cost-of-error: sai thì ai chịu gì · đảo lại được không · chờ người thì mất gì.
-- Phương án đã cân nhắc và vì sao loại.
-  Thêm:
-- Tool khó xếp nhất: mỗi người từng chọn gì, cái giá của mỗi phía (trỏ về kịch bản ở §2), nhóm chốt thế nào.
-- Thử mức đã đặt trên 2 kịch bản đắt nhất + 1 kịch bản bình thường: cái sai có bị chặn không? còn việc nào làm khi lẽ ra phải hỏi? người dùng bình thường có phải chờ vô ích không?
-- Luật thêm hoặc tool tách bước (nếu có), và vì sao.
-- Một mức tự chủ đã đổi lời hứa nào với người dùng.
+| Tool | Mức của nhóm | Ai duyệt · thấy gì · quá hạn | Chỗ trên màn hình |
+|---|---|---|---|
+| `tra_cuu_tai_lieu` | **tự làm** | — | chip § (2) |
+| `goi_y_buoc_dau` *(tách từ `goi_y_bai_tap`)* | **tự làm** | — | nút [Gợi ý tiếp] (8) |
+| `gui_dap_so_bai_mo` *(tách từ `goi_y_bai_tap`)* | **cấm** | không có nút làm | — (nút đáp án không tồn tại) |
+| `chuyen_TA` | **tự làm** | — | thẻ trạng thái (4) · nút [Hỏi TA] (8) |
+| `soan_nhap_FAQ` *(tách từ `dang_FAQ`)* | **tự làm** | — | bản nháp ẩn |
+| `dang_FAQ` *(bước đăng)* | **cần người duyệt** | TA duyệt · thấy câu hỏi + nháp trả lời + mã § · quá hạn → **không đăng** | FAQ cả lớp |
+
+### 4.1 Lý do theo cost-of-error (từng tool)
+
+**`tra_cuu_tai_lieu` — tự làm.**
+- *Sai thì ai chịu gì:* chỉ đọc, không đổi gì; trả sai thì học viên mở chip § (2) đọc đoạn gốc và tự kiểm.
+- *Đảo lại được không:* không cần đảo — không thay đổi gì.
+- *Chờ người thì mất gì:* duyệt từng câu tra cứu = chặn cả câu đúng, giết mục đích "tối muộn không ai để hỏi".
+- *Phương án đã loại:* (a) cần TA duyệt mỗi lần tra → chờ vô ích; (b) cấm tra → mất nền của mọi câu trả lời.
+
+**`goi_y_buoc_dau` — tự làm.**
+- *Sai thì ai chịu gì:* chỉ nêu bước đầu, không có số liệu §3.5 → học viên tự làm ra đáp số; sai thì tự sửa.
+- *Đảo lại được không:* gợi ý là hội thoại, sửa ở lượt sau được (như §3.2 mời "gửi mình cách em tính").
+- *Chờ người thì mất gì:* 23h không ai duyệt; chờ chính là kiểu sai KB #2 — bỏ rơi học viên trong 49 phút.
+- *Phương án đã loại:* cần người duyệt → người duyệt chính là học viên đang muốn đáp số, không chặn được gì.
+
+**`gui_dap_so_bai_mo` — cấm.**
+- *Sai thì ai chịu gì:* đưa/xác nhận đáp số Bài 3 đang mở → học viên **đã chép**, không đảo lại (KB #2, #3).
+- *Đảo lại được không:* không — đã chép là hết.
+- *Chờ người thì mất gì:* không áp dụng: một bước xác nhận cũng không đủ chặn, vì người muốn đáp số sẽ bấm "đồng ý".
+- *Phương án đã loại:* để "cần người duyệt" → không chặn được, chỉ thêm bước.
+
+**`chuyen_TA` — tự làm.**
+- *Sai thì ai chịu gì:* chuyển nhầm thì TA thấy câu thừa, bỏ qua — rẻ; học viên bấm [Rút lại] trên thẻ (4) nếu đổi ý.
+- *Đảo lại được không:* được (track ghi rõ; có [Rút lại]).
+- *Chờ người thì mất gì:* chính mục đích là đưa tới người; thêm duyệt = câu hỏi không bao giờ tới TA. Ở §3.1, không báo thì tài liệu sai nằm lại cho cả lớp.
+- *Phương án đã loại:* (a) cần TA duyệt trước khi nhận → vô nghĩa; (b) để AI tự nói "đã báo TA" mà không gọi tool → chính là lỗi §3 (thẻ 4 phải do tool sinh).
+
+**`soan_nhap_FAQ` — tự làm.**
+- *Sai thì ai chịu gì:* chỉ là bản nháp chưa ai đọc; sai thì sửa/xoá, rẻ.
+- *Đảo lại được không:* được (chưa phát tán).
+- *Chờ người thì mất gì:* chờ ai duyệt một bản nháp chưa tới ai = không có gì để duyệt.
+- *Phương án đã loại:* bắt bước soạn cũng "cần người duyệt" → thêm bước vô ích.
+
+**`dang_FAQ` (bước đăng) — cần người duyệt (TA).**
+- *Sai thì ai chịu gì:* một câu sai lan ra **cả lớp**; gỡ được nhưng nhiều người đã đọc (KB #5) → đắt, không đảo lại với người đã đọc.
+- *Đảo lại được không:* gỡ được, nhưng "đã đọc thì hết".
+- *Chờ người thì mất gì:* FAQ không gấp — câu hỏi vẫn được trả lời riêng ngay; chỉ khâu đăng cả lớp mới chờ. Chờ rẻ hơn đăng sai.
+- *Người duyệt thấy gì:* câu hỏi gốc + nháp trả lời + mã § trích. *Quá hạn (TA không duyệt):* mặc định **không đăng**.
+- *Phương án đã loại:* (a) tự đăng như Study mode → loại vì KB #5; (b) cấm hẳn → loại vì FAQ có ích cho cả lớp.
+
+### 4.2 Tool khó xếp nhất — `goi_y_bai_tap`
+
+Mỗi mức đều có giá:
+- **Tự làm:** KB #2 — gợi ý quá tay lộ đáp số Bài 3 đang mở, học viên đã chép.
+- **Cần người duyệt:** 23h không ai duyệt; "chờ cũng là một kiểu sai" — học viên kẹt đúng lúc cần nhất (còn 49 phút).
+- **Cấm:** mất giá trị cốt lõi — trợ lý thành vô dụng cho việc gợi ý.
+- *Mỗi người từng chọn:* A "cần người duyệt" (sợ lộ đáp số) · B "tự làm" (sợ chờ) · C "cấm" (sợ chép). **Nhóm chốt: tách hai bước** — `goi_y_buoc_dau` tự làm, `gui_dap_so_bai_mo` cấm → giữ cả hai phía.
+
+### 4.3 Thử mức đã đặt trên 2 kịch bản đắt nhất + 1 bình thường
+
+- **KB #2 (bài đang mở):** *bị chặn?* Có — `gui_dap_so_bai_mo` ở mức cấm nên màn hình **không có nút đáp án** (§3.2, mục 8); chỉ `goi_y_buoc_dau` trả gợi ý. *Còn làm khi lẽ ra phải hỏi?* Không, miễn giữ luật "gợi ý tối đa 2 bậc, không bậc nào chứa số §3.5". *Người bình thường chờ vô ích?* Không — gợi ý tới ngay.
+- **KB #1 (tài liệu §3.3 sai):** *bị chặn?* Một phần — `tra_cuu_tai_lieu` tự làm sẽ trả đúng câu §3.3; chặn nằm ở **luật §3** ("không khẳng định tài liệu đúng khi chưa kiểm" + cờ "nghi sai" mục 3) và ở `chuyen_TA` (thẻ 4), không ở mức tool. *Còn làm khi lẽ ra phải hỏi?* Không được khẳng định; phải nêu nghi ngờ + báo. *Chờ vô ích?* Không.
+- **KB #7 (bình thường — "bài 2 sao đáp án là 6"):** Bài 2 đã hết hạn → `tra_cuu_tai_lieu` tự làm + giải đầy đủ; `dang_FAQ` không tự đăng nên không chờ ai. Đúng, không chờ vô ích.
+
+### 4.4 Luật thêm / tách bước
+
+- **Tách `goi_y_bai_tap`** → `goi_y_buoc_dau` (tự làm) + `gui_dap_so_bai_mo` (cấm): nhờ đó KB #2 bị chặn **ở mức tool**, không chỉ dựa vào câu chữ.
+- **Tách `dang_FAQ`** → `soan_nhap_FAQ` (tự làm) + `dang_FAQ` (cần duyệt): đúng như §3 — AI soạn nháp, TA duyệt mới đăng.
+- **Luật thêm:** *"gợi ý không bao giờ chứa số liệu đáp số của bài đang mở"* và *"thẻ trạng thái 'đã gửi' chỉ do `chuyen_TA` sinh, AI không tự khẳng định"*.
+
+### 4.5 Một mức tự chủ đã đổi lời hứa nào
+
+- `goi_y_bai_tap`: **"AI soạn gợi ý và gửi cho bạn"** → **"AI chỉ nêu bước đầu, đáp số bạn tự làm ra"**.
+- `dang_FAQ`: **"hỏi là cả lớp cùng thấy"** → **"câu hỏi trả lời riêng; lên FAQ chỉ khi TA duyệt"**.
 
 ## §5. Prototype  (chặng 5)
 

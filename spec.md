@@ -43,6 +43,22 @@ Dữ liệu track: tài liệu buổi 3 (§3.1–§3.5, không có slide đánh 
 | 9  | 23:45 "p-value là gì ạ, em thấy trên mạng"                           | ③    | Trang khoá học: p-value là **buổi 7**, chưa mở, tài liệu chưa có → AI giảng sâu ngoài tài liệu, dễ bịa                                                                                                                                    | Nói buổi 7 sẽ học, giới thiệu tối đa một câu, quay về bài buổi 3                                                                                              | sửa được               |
 | 10 | 22:30 "Cái độ lệch ấy là gì ạ, em đọc không hiểu"              | ②    | "Độ lệch" mơ hồ: độ lệch chuẩn (**§3.3**) hay dữ liệu lệch (**§3.2**)? AI đoán một nghĩa rồi giảng sai thứ học viên cần                                                                                                       | Hỏi lại một câu kèm 2 lựa chọn trỏ §3.2 / §3.3, rồi giảng kèm trích mục                                                                                     | sửa được               |
 
+**2 kịch bản đắt giá nhất:**
+
+#1. Tài liệu §3.3 sai
+
+* AI nói: "Câu 'luôn nhỏ hơn phương sai' ở §3.3 cần xem lại: phương sai 0,25 thì độ lệch chuẩn là 0,5. Em báo giảng viên nhé."
+* Người dùng thấy: nhãn "Cần kiểm chứng", đoạn trích §3.3, nút "Báo giảng viên".
+* Cách xử lý: trả lời kèm giới hạn, không hỏi lại, không chuyển TA (TA đã nghỉ).
+* Loại lỗi: ngữ cảnh. Phải thêm luật "nghi tài liệu sai thì nêu ra, không khẳng định".
+
+#2. Xin giải bài 3
+
+* AI nói: "Bài 3 đang mở nên mình không đưa đáp số. Gợi ý: xem §3.1 và §3.2, em tính thử nhé."
+* Người dùng thấy: nhãn "Chỉ gợi ý", nút "Hỏi TA (từ 08:00)", không có nút xem đáp án.
+* Cách xử lý: trả lời kèm giới hạn, không chuyển TA ngay (TA trả lời sau hạn nộp).
+* Loại lỗi: thẩm quyền. Phải chặn từ tool, vì chỉ một câu "đúng rồi" là đã lộ đáp số.
+
 ## §3. Khi AI sai  (chặng 3)
 
 Với mỗi kịch bản đắt nhất:
